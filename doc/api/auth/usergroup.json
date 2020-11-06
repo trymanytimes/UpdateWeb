@@ -1,0 +1,34 @@
+{
+  "resourceType": "usergroup",
+  "collectionName": "usergroups",
+  "goStructName": "UserGroup",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "comment": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "roleIDs": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "userIDs": {
+      "type": "array",
+      "elemType": "string"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "resourceType": "forward",
+  "collectionName": "forwards",
+  "goStructName": "Forward",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "comment": {
+      "type": "string"
+    },
+    "ips": {
+      "type": "array",
+      "elemType": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

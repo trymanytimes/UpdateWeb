@@ -1,0 +1,146 @@
+{
+  "role": {
+    "SUPER": {"baseAuthority":[],"dnsAuthority":[],"dhcpAuthority":[]},
+    "NORMAL": {
+      "baseAuthority": [
+        {
+          "resource": "ddiuser",
+          "operations": ["GET","ACTION","POST"]
+        },
+        {
+          "resource": "node",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "dns",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "dhcp",
+          "operations": ["GET"]
+        }
+      ],
+      "dnsAuthority": [
+        {
+          "resource": "dnsglobalconfig",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "acl",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "view",
+          "views":[],
+          "operations": ["GET"]
+        },
+        {
+          "resource": "zone",
+          "views":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "rr",
+          "views":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "redirection",
+          "views":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "urlredirect",
+          "views":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "forward",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "forwardzone",
+          "views":[],
+          "filter": true,
+          "operations": ["GET"]
+        }
+      ],
+      "dhcpAuthority": [
+        {
+          "resource": "dhcpconfig",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "subnet",
+          "plans":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "pdpool",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "pool",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "reservation",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "staticaddress",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "plan",
+          "plans":[],
+          "operations": ["GET"]
+        },
+        {
+          "resource": "layout",
+          "plans":[],
+          "operations": ["GET"]
+        },
+        {
+          "resource": "networkinterface",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "asset",
+          "plans":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "networkequipment",
+          "plans":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "networktopology",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "scannedsubnet",
+          "plans":[],
+          "filter": true,
+          "operations": ["GET"]
+        },
+        {
+          "resource": "clientclass",
+          "operations": ["GET"]
+        },
+        {
+          "resource": "netnode",
+          "operations": ["GET"]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "resourceType": "dns",
+  "collectionName": "dnses",
+  "parentResources": [
+    "node"
+  ],
+  "goStructName": "Dns",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "cachehitratio": {
+      "type": "cacheHitRatio"
+    },
+    "qps": {
+      "type": "qps"
+    },
+    "querytyperatios": {
+      "type": "array",
+      "elemType": "queryTypeRatio"
+    },
+    "resolvedratios": {
+      "type": "array",
+      "elemType": "resolvedRatio"
+    },
+    "toptendomains": {
+      "type": "array",
+      "elemType": "topDomain"
+    },
+    "toptenips": {
+      "type": "array",
+      "elemType": "topIp"
+    }
+  },
+  "subResources": {
+    "cacheHitRatio": {
+      "ratios": {
+        "type": "array",
+        "elemType": "ratioWithTimestamp"
+      }
+    },
+    "qps": {
+      "values": {
+        "type": "array",
+        "elemType": "valueWithTimestamp"
+      }
+    },
+    "queryTypeRatio": {
+      "ratios": {
+        "type": "array",
+        "elemType": "ratioWithTimestamp"
+      },
+      "type": {
+        "type": "string"
+      }
+    },
+    "ratioWithTimestamp": {
+      "ratio": {
+        "type": "string"
+      },
+      "timestamp": {
+        "type": "date"
+      }
+    },
+    "resolvedRatio": {
+      "ratios": {
+        "type": "array",
+        "elemType": "ratioWithTimestamp"
+      },
+      "rcode": {
+        "type": "string"
+      }
+    },
+    "topDomain": {
+      "count": {
+        "type": "uint"
+      },
+      "domain": {
+        "type": "string"
+      }
+    },
+    "topIp": {
+      "count": {
+        "type": "uint"
+      },
+      "ip": {
+        "type": "string"
+      }
+    },
+    "valueWithTimestamp": {
+      "timestamp": {
+        "type": "date"
+      },
+      "value": {
+        "type": "uint"
+      }
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "POST"
+  ],
+  "collectionMethods": [
+    "GET"
+  ],
+  "resourceActions": [
+    {
+      "name": "exportcsv",
+      "input": {
+        "period": {
+          "type": "int"
+        }
+      },
+      "output": {
+        "path": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

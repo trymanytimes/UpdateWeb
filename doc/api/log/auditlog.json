@@ -1,0 +1,65 @@
+{
+  "resourceType": "auditlog",
+  "collectionName": "auditlogs",
+  "goStructName": "AuditLog",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "errMessage": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "method": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "parameters": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "resourceId": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "resourceKind": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "resourcePath": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "sourceIp": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "succeed": {
+      "type": "bool",
+      "description": [
+        "readonly"
+      ]
+    },
+    "username": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "collectionMethods": [
+    "GET"
+  ]
+}

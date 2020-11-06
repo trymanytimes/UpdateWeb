@@ -1,0 +1,26 @@
+{
+  "resourceType": "clientclass",
+  "collectionName": "clientclasses",
+  "goStructName": "ClientClass",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "name": {
+      "type": "string",
+      "description": [
+        "immutable"
+      ]
+    },
+    "regexp": {
+      "type": "string"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "resourceType": "dhcpconfig",
+  "collectionName": "dhcpconfigs",
+  "goStructName": "DhcpConfig",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "domainServers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "maxValidLifetime": {
+      "type": "uint"
+    },
+    "minValidLifetime": {
+      "type": "uint"
+    },
+    "validLifetime": {
+      "type": "uint"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET"
+  ]
+}

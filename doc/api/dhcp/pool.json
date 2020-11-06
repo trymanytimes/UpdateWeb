@@ -1,0 +1,63 @@
+{
+  "resourceType": "pool",
+  "collectionName": "pools",
+  "parentResources": [
+    "subnet"
+  ],
+  "goStructName": "Pool",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "beginAddress": {
+      "type": "string",
+      "description": [
+        "required",
+        "immutable"
+      ]
+    },
+    "capacity": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    },
+    "clientClass": {
+      "type": "string"
+    },
+    "domainServers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "endAddress": {
+      "type": "string",
+      "description": [
+        "required",
+        "immutable"
+      ]
+    },
+    "routers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "usedRatio": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "version": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

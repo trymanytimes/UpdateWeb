@@ -1,0 +1,132 @@
+{
+  "resourceType": "node",
+  "collectionName": "nodes",
+  "goStructName": "Node",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "controllerIP": {
+      "type": "string"
+    },
+    "cpuRatio": {
+      "type": "string"
+    },
+    "cpuUsage": {
+      "type": "array",
+      "elemType": "ratioWithTimestamp"
+    },
+    "dhcpIsAlive": {
+      "type": "bool"
+    },
+    "discUsage": {
+      "type": "array",
+      "elemType": "ratioWithTimestamp"
+    },
+    "dnsIsAlive": {
+      "type": "bool"
+    },
+    "hostName": {
+      "type": "string"
+    },
+    "ip": {
+      "type": "string"
+    },
+    "master": {
+      "type": "string"
+    },
+    "memRatio": {
+      "type": "string"
+    },
+    "memoryUsage": {
+      "type": "array",
+      "elemType": "ratioWithTimestamp"
+    },
+    "network": {
+      "type": "array",
+      "elemType": "ratioWithTimestamp"
+    },
+    "nodeIsAlive": {
+      "type": "bool"
+    },
+    "roles": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "startTime": {
+      "type": "time"
+    }
+  },
+  "subResources": {
+    "location": {
+      "cacheEnd": {
+        "type": "int"
+      },
+      "cacheStart": {
+        "type": "int"
+      },
+      "cacheZone": {
+        "type": "zone"
+      },
+      "name": {
+        "type": "string"
+      },
+      "tx": {
+        "type": "array",
+        "elemType": "zoneTrans"
+      },
+      "zone": {
+        "type": "array",
+        "elemType": "zone"
+      }
+    },
+    "ratioWithTimestamp": {
+      "ratio": {
+        "type": "string"
+      },
+      "timestamp": {
+        "type": "date"
+      }
+    },
+    "time": {
+      "ext": {
+        "type": "int"
+      },
+      "loc": {
+        "type": "location"
+      },
+      "wall": {
+        "type": "uint"
+      }
+    },
+    "zone": {
+      "isDST": {
+        "type": "bool"
+      },
+      "name": {
+        "type": "string"
+      },
+      "offset": {
+        "type": "int"
+      }
+    },
+    "zoneTrans": {
+      "index": {
+        "type": "uint"
+      },
+      "isstd": {
+        "type": "bool"
+      },
+      "isutc": {
+        "type": "bool"
+      },
+      "when": {
+        "type": "int"
+      }
+    }
+  },
+  "resourceMethods": [
+    "GET"
+  ],
+  "collectionMethods": [
+    "GET"
+  ]
+}

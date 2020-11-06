@@ -1,0 +1,53 @@
+{
+  "resourceType": "dnslog",
+  "collectionName": "dnslogs",
+  "goStructName": "DNSLog",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "content": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "nodeIP": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "time": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "POST"
+  ],
+  "collectionMethods": [
+    "GET"
+  ],
+  "resourceActions": [
+    {
+      "name": "exportcsv",
+      "input": {
+        "from": {
+          "type": "string"
+        },
+        "node_ip": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "output": {
+        "path": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "resourceType": "networkequipment",
+  "collectionName": "networkequipments",
+  "goStructName": "NetworkEquipment",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "administrationAddress": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "administrationMac": {
+      "type": "string"
+    },
+    "computerRack": {
+      "type": "string"
+    },
+    "computerRoom": {
+      "type": "string"
+    },
+    "department": {
+      "type": "string"
+    },
+    "downlinkAddresses": {
+      "type": "map",
+      "keyType": "string",
+      "valueType": "linkedNetworkEquipment"
+    },
+    "equipmentType": {
+      "type": "enum",
+      "validValues": [
+        "router",
+        "security_gateway",
+        "core_switch",
+        "access_switch",
+        "convergence_switch",
+        "firewall",
+        "wirelessAp",
+        "wirelessAc",
+        "other"
+      ],
+      "description": [
+        "required"
+      ]
+    },
+    "firmwareVersion": {
+      "type": "string"
+    },
+    "lastRefreshTime": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "nextHopAddresses": {
+      "type": "map",
+      "keyType": "string",
+      "valueType": "linkedNetworkEquipment"
+    },
+    "responsiblePerson": {
+      "type": "string"
+    },
+    "serialNumber": {
+      "type": "string"
+    },
+    "snmpCommunity": {
+      "type": "string"
+    },
+    "snmpPort": {
+      "type": "uint"
+    },
+    "telephone": {
+      "type": "string"
+    },
+    "uplinkAddresses": {
+      "type": "map",
+      "keyType": "string",
+      "valueType": "linkedNetworkEquipment"
+    }
+  },
+  "subResources": {
+    "linkedNetworkEquipment": {
+      "ip": {
+        "type": "string"
+      },
+      "port": {
+        "type": "string"
+      }
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT",
+    "POST"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ],
+  "resourceActions": [
+    {
+      "name": "snmp",
+      "input": {
+        "community": {
+          "type": "string"
+        },
+        "port": {
+          "type": "uint"
+        }
+      }
+    }
+  ]
+}

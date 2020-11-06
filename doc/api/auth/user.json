@@ -1,0 +1,102 @@
+{
+  "resourceType": "user",
+  "collectionName": "users",
+  "goStructName": "User",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "comment": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "roleIDs": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "userGroupIDs": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "username": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ],
+  "resourceActions": [
+    {
+      "name": "changePassword",
+      "input": {
+        "username": {
+          "type": "string",
+          "description": [
+            "required"
+          ]
+        },
+        "password": {
+          "type": "string",
+          "description": [
+            "required"
+          ]
+        }
+      },
+      "output": {
+        "result": {
+          "username": {
+            "type": "string",
+            "description": []
+          },
+          "password": {
+            "type": "string",
+            "description": []
+          }
+        }
+      }
+    },
+    {
+      "name": "resetPassword",
+      "input": {
+        "user": {
+          "username": {
+            "type": "string",
+            "description": [
+              "required"
+            ]
+          },
+          "password": {
+            "type": "string",
+            "description": []
+          }
+        }
+      },
+      "output": {
+        "result": {
+          "user": {
+            "username": {
+              "type": "string",
+              "description": []
+            },
+            "password": {
+              "type": "string",
+              "description": []
+            }
+          }
+        }
+      }
+    }
+  ]
+}

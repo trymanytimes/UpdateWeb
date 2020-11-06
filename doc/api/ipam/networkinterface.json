@@ -1,0 +1,65 @@
+{
+  "resourceType": "networkinterface",
+  "collectionName": "networkinterfaces",
+  "parentResources": [
+    "scannedsubnet"
+  ],
+  "goStructName": "NetworkInterface",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "computerRack": {
+      "type": "string"
+    },
+    "computerRoom": {
+      "type": "string"
+    },
+    "expire": {
+      "type": "date"
+    },
+    "hostname": {
+      "type": "string"
+    },
+    "ip": {
+      "type": "string"
+    },
+    "ipState": {
+      "type": "enum",
+      "validValues": [
+        "active",
+        "inactive",
+        "conflict",
+        "zombie"
+      ]
+    },
+    "ipType": {
+      "type": "enum",
+      "validValues": [
+        "assigned",
+        "unassigned",
+        "unmanagered",
+        "reservation"
+      ]
+    },
+    "mac": {
+      "type": "string"
+    },
+    "switchName": {
+      "type": "string"
+    },
+    "switchPort": {
+      "type": "string"
+    },
+    "validLifetime": {
+      "type": "uint"
+    },
+    "vlanId": {
+      "type": "int"
+    }
+  },
+  "resourceMethods": [
+    "GET"
+  ],
+  "collectionMethods": [
+    "GET"
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "resourceType": "asset",
+  "collectionName": "assets",
+  "goStructName": "Asset",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "computerRack": {
+      "type": "string"
+    },
+    "computerRoom": {
+      "type": "string"
+    },
+    "department": {
+      "type": "string"
+    },
+    "deployedService": {
+      "type": "string"
+    },
+    "deviceType": {
+      "type": "enum",
+      "validValues": [
+        "pc",
+        "mobile",
+        "printer",
+        "camera",
+        "nvr",
+        "iot",
+        "other"
+      ],
+      "description": [
+        "required"
+      ]
+    },
+    "ipv4s": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "ipv6s": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "mac": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "responsiblePerson": {
+      "type": "string"
+    },
+    "switchName": {
+      "type": "string"
+    },
+    "switchPort": {
+      "type": "string"
+    },
+    "telephone": {
+      "type": "string"
+    },
+    "vlanId": {
+      "type": "int"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT",
+    "POST"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ],
+  "resourceActions": [
+    {
+      "name": "register",
+      "input": {
+        "computerRack": {
+          "type": "string"
+        },
+        "computerRoom": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "subnetId": {
+          "type": "string"
+        },
+        "switchName": {
+          "type": "string"
+        },
+        "switchPort": {
+          "type": "string"
+        },
+        "vlanId": {
+          "type": "int"
+        }
+      }
+    }
+  ]
+}

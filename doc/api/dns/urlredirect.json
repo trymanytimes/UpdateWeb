@@ -1,0 +1,32 @@
+{
+  "resourceType": "urlredirect",
+  "collectionName": "urlredirects",
+  "parentResources": [
+    "view"
+  ],
+  "goStructName": "UrlRedirect",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "domain": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

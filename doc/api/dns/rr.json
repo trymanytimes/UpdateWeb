@@ -1,0 +1,62 @@
+{
+  "resourceType": "rr",
+  "collectionName": "rrs",
+  "parentResources": [
+    "zone"
+  ],
+  "goStructName": "Rr",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "activeRdata": {
+      "type": "string"
+    },
+    "datatype": {
+      "type": "enum",
+      "validValues": [
+        "A",
+        "AAAA",
+        "CNAME",
+        "HINFO",
+        "MX",
+        "NS",
+        "NAPTR",
+        "PTR",
+        "SRV",
+        "TXT"
+      ],
+      "description": [
+        "required"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "rdata": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "rdataBackup": {
+      "type": "string"
+    },
+    "ttl": {
+      "type": "uint",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "resourceType": "mailreceiver",
+  "collectionName": "mailreceivers",
+  "goStructName": "MailReceiver",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "address": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

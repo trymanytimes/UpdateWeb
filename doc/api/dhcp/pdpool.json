@@ -1,0 +1,45 @@
+{
+  "resourceType": "pdpool",
+  "collectionName": "pdpools",
+  "parentResources": [
+    "subnet"
+  ],
+  "goStructName": "PdPool",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "clientClass": {
+      "type": "string"
+    },
+    "delegatedLen": {
+      "type": "uint",
+      "description": [
+        "required"
+      ]
+    },
+    "domainServers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "prefix": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "prefixLen": {
+      "type": "uint",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "resourceType": "plan",
+  "collectionName": "plans",
+  "goStructName": "Plan",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "description": {
+      "type": "string"
+    },
+    "maskLen": {
+      "type": "int"
+    },
+    "prefix": {
+      "type": "string"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

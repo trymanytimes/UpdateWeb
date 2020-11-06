@@ -1,0 +1,67 @@
+{
+  "resourceType": "forwardzone",
+  "collectionName": "forwardzones",
+  "parentResources": [
+    "view"
+  ],
+  "goStructName": "ForwardZone",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "comment": {
+      "type": "string"
+    },
+    "forwardids": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "forwards": {
+      "type": "array",
+      "elemType": "forward"
+    },
+    "forwardtype": {
+      "type": "enum",
+      "validValues": [
+        "only",
+        "first"
+      ],
+      "description": [
+        "required"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "subResources": {
+    "forward": {
+      "comment": {
+        "type": "string"
+      },
+      "ips": {
+        "type": "array",
+        "elemType": "string",
+        "description": [
+          "required"
+        ]
+      },
+      "name": {
+        "type": "string",
+        "description": [
+          "required"
+        ]
+      }
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "resourceType": "threshold",
+  "collectionName": "thresholds",
+  "goStructName": "Threshold",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "level": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "sendMail": {
+      "type": "bool"
+    },
+    "thresholdType": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "value": {
+      "type": "uint"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

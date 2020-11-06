@@ -1,0 +1,43 @@
+{
+  "resourceType": "staticaddress",
+  "collectionName": "staticaddresses",
+  "parentResources": [
+    "subnet"
+  ],
+  "goStructName": "StaticAddress",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "capacity": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    },
+    "hwAddress": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "ipAddress": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "version": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

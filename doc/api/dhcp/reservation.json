@@ -1,0 +1,58 @@
+{
+  "resourceType": "reservation",
+  "collectionName": "reservations",
+  "parentResources": [
+    "subnet"
+  ],
+  "goStructName": "Reservation",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "capacity": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    },
+    "domainServers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "hwAddress": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "ipAddress": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "routers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "usedRatio": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "version": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

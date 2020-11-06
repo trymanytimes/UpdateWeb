@@ -1,0 +1,64 @@
+{
+  "resourceType": "layout",
+  "collectionName": "layouts",
+  "parentResources": [
+    "plan"
+  ],
+  "goStructName": "Layout",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "autofill": {
+      "type": "bool"
+    },
+    "firstfinished": {
+      "type": "bool"
+    },
+    "name": {
+      "type": "string"
+    },
+    "nodes": {
+      "type": "array",
+      "elemType": "planNode"
+    }
+  },
+  "subResources": {
+    "planNode": {
+      "Layout": {
+        "type": "string"
+      },
+      "bitWidth": {
+        "type": "int"
+      },
+      "ipv4": {
+        "type": "string"
+      },
+      "modified": {
+        "type": "int"
+      },
+      "name": {
+        "type": "string"
+      },
+      "pid": {
+        "type": "string"
+      },
+      "prefix": {
+        "type": "string"
+      },
+      "sequence": {
+        "type": "int"
+      },
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

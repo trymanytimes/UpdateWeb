@@ -1,0 +1,43 @@
+{
+  "resourceType": "mailsender",
+  "collectionName": "mailsenders",
+  "goStructName": "MailSender",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "enabled": {
+      "type": "bool"
+    },
+    "host": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "password": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "port": {
+      "type": "int",
+      "description": [
+        "required"
+      ]
+    },
+    "username": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

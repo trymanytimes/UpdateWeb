@@ -1,0 +1,58 @@
+{
+  "resourceType": "scannedsubnet",
+  "collectionName": "scannedsubnets",
+  "goStructName": "ScannedSubnet",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "activeRatio": {
+      "type": "string"
+    },
+    "assignedRatio": {
+      "type": "string"
+    },
+    "conflictRatio": {
+      "type": "string"
+    },
+    "inactiveRatio": {
+      "type": "string"
+    },
+    "ipnet": {
+      "type": "string"
+    },
+    "reservationRatio": {
+      "type": "string"
+    },
+    "staticAddressRatio": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "string"
+    },
+    "unassignedRatio": {
+      "type": "string"
+    },
+    "unmanagedRatio": {
+      "type": "string"
+    },
+    "zombieRatio": {
+      "type": "string"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "POST"
+  ],
+  "collectionMethods": [
+    "GET"
+  ],
+  "resourceActions": [
+    {
+      "name": "exportcsv",
+      "output": {
+        "path": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

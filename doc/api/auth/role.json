@@ -1,0 +1,34 @@
+{
+  "resourceType": "role",
+  "collectionName": "roles",
+  "goStructName": "Role",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "comment": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "plans": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "views": {
+      "type": "array",
+      "elemType": "string"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

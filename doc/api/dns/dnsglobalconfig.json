@@ -1,0 +1,21 @@
+{
+  "resourceType": "dnsglobalconfig",
+  "collectionName": "dnsglobalconfigs",
+  "goStructName": "DnsGlobalConfig",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "isLogOpen": {
+      "type": "bool"
+    },
+    "ttl": {
+      "type": "int"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "resourceType": "acl",
+  "collectionName": "acls",
+  "goStructName": "Acl",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "comment": {
+      "type": "string"
+    },
+    "ips": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "isp": {
+      "type": "enum",
+      "validValues": [
+        "cmcc",
+        "cucc",
+        "ctcc",
+        ""
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "status": {
+      "type": "enum",
+      "validValues": [
+        "forbidden",
+        "allow"
+      ],
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

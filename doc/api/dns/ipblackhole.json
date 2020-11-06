@@ -1,0 +1,23 @@
+{
+  "resourceType": "ipblackhole",
+  "collectionName": "ipblackholes",
+  "goStructName": "IpBlackHole",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "acl": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

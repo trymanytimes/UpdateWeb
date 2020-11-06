@@ -1,0 +1,69 @@
+{
+  "resourceType": "subnet",
+  "collectionName": "subnets",
+  "goStructName": "Subnet",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "capacity": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    },
+    "clientClass": {
+      "type": "string"
+    },
+    "domainServers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "ipnet": {
+      "type": "string",
+      "description": [
+        "required",
+        "immutable"
+      ]
+    },
+    "maxValidLifetime": {
+      "type": "uint"
+    },
+    "minValidLifetime": {
+      "type": "uint"
+    },
+    "relayAgentAddresses": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "routers": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "tags": {
+      "type": "string"
+    },
+    "usedRatio": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "validLifetime": {
+      "type": "uint"
+    },
+    "version": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

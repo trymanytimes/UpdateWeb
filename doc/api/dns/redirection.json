@@ -1,0 +1,62 @@
+{
+  "resourceType": "redirection",
+  "collectionName": "redirections",
+  "parentResources": [
+    "view"
+  ],
+  "goStructName": "Redirection",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "View": {
+      "type": "string"
+    },
+    "datatype": {
+      "type": "enum",
+      "validValues": [
+        "A",
+        "AAAA",
+        "CNAME"
+      ],
+      "description": [
+        "required"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "rdata": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "redirecttype": {
+      "type": "enum",
+      "validValues": [
+        "localzone",
+        "nxdomain"
+      ],
+      "description": [
+        "required"
+      ]
+    },
+    "ttl": {
+      "type": "uint",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "resourceType": "zone",
+  "collectionName": "zones",
+  "parentResources": [
+    "view"
+  ],
+  "goStructName": "Zone",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "comment": {
+      "type": "string"
+    },
+    "isarpa": {
+      "type": "bool",
+      "description": [
+        "required"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "rrsRole": {
+      "type": "string"
+    },
+    "rrsize": {
+      "type": "int"
+    },
+    "ttl": {
+      "type": "uint",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT",
+    "POST"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ],
+  "resourceActions": [
+    {
+      "name": "changingRRs",
+      "input": {
+        "role": {
+          "type": "enum",
+          "validValues": [
+            "main",
+            "backup"
+          ]
+        }
+      },
+      "output": {
+        "result": {
+          "type": "bool"
+        }
+      }
+    }
+  ]
+}

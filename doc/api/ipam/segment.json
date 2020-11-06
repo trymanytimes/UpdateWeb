@@ -1,0 +1,32 @@
+{
+  "resourceType": "segment",
+  "collectionName": "segments",
+  "parentResources": [
+    "layout"
+  ],
+  "goStructName": "Segment",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "index": {
+      "type": "int"
+    },
+    "name": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "elemType": "string"
+    },
+    "values": {
+      "type": "array",
+      "elemType": "int"
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET"
+  ]
+}

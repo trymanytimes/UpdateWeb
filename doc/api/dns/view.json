@@ -1,0 +1,63 @@
+{
+  "resourceType": "view",
+  "collectionName": "views",
+  "goStructName": "View",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "acls": {
+      "type": "array",
+      "elemType": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "comment": {
+      "type": "string"
+    },
+    "dns64": {
+      "type": "string"
+    },
+    "forwardzonesize": {
+      "type": "int"
+    },
+    "localzonesize": {
+      "type": "int"
+    },
+    "masterzonesize": {
+      "type": "int"
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "required"
+      ]
+    },
+    "nxdomainsize": {
+      "type": "int"
+    },
+    "priority": {
+      "type": "uint",
+      "description": [
+        "required"
+      ]
+    },
+    "rrsize": {
+      "type": "int"
+    },
+    "urlRedirectSize": {
+      "type": "int",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "DELETE",
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET",
+    "POST"
+  ]
+}

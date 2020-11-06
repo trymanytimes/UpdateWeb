@@ -1,0 +1,26 @@
+{
+  "resourceType": "recursiveconcurrent",
+  "collectionName": "recursiveconcurrents",
+  "goStructName": "RecursiveConcurrent",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "fetchesperzone": {
+      "type": "int",
+      "description": [
+        "required"
+      ]
+    },
+    "recursiveclients": {
+      "type": "int",
+      "description": [
+        "required"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET"
+  ]
+}

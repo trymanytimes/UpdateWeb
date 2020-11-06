@@ -1,0 +1,37 @@
+{
+  "resourceType": "netnode",
+  "collectionName": "netnodes",
+  "parentResources": [
+    "layout"
+  ],
+  "goStructName": "NetNode",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "netitems": {
+      "type": "array",
+      "elemType": "netItem"
+    }
+  },
+  "subResources": {
+    "netItem": {
+      "level": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "prefix": {
+        "type": "string"
+      },
+      "tags": {
+        "type": "string"
+      },
+      "usage": {
+        "type": "string"
+      }
+    }
+  },
+  "collectionMethods": [
+    "GET"
+  ]
+}

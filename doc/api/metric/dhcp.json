@@ -1,0 +1,98 @@
+{
+  "resourceType": "dhcp",
+  "collectionName": "dhcps",
+  "parentResources": [
+    "node"
+  ],
+  "goStructName": "Dhcp",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "lease": {
+      "type": "lease"
+    },
+    "lps": {
+      "type": "lps"
+    },
+    "packets": {
+      "type": "array",
+      "elemType": "packet"
+    },
+    "subnetusedratios": {
+      "type": "array",
+      "elemType": "subnetUsedRatio"
+    }
+  },
+  "subResources": {
+    "lease": {
+      "values": {
+        "type": "array",
+        "elemType": "valueWithTimestamp"
+      }
+    },
+    "lps": {
+      "values": {
+        "type": "array",
+        "elemType": "valueWithTimestamp"
+      }
+    },
+    "packet": {
+      "type": {
+        "type": "string"
+      },
+      "values": {
+        "type": "array",
+        "elemType": "valueWithTimestamp"
+      },
+      "version": {
+        "type": "string"
+      }
+    },
+    "ratioWithTimestamp": {
+      "ratio": {
+        "type": "string"
+      },
+      "timestamp": {
+        "type": "date"
+      }
+    },
+    "subnetUsedRatio": {
+      "ipnet": {
+        "type": "string"
+      },
+      "usedRatios": {
+        "type": "array",
+        "elemType": "ratioWithTimestamp"
+      }
+    },
+    "valueWithTimestamp": {
+      "timestamp": {
+        "type": "date"
+      },
+      "value": {
+        "type": "uint"
+      }
+    }
+  },
+  "resourceMethods": [
+    "GET",
+    "POST"
+  ],
+  "collectionMethods": [
+    "GET"
+  ],
+  "resourceActions": [
+    {
+      "name": "exportcsv",
+      "input": {
+        "period": {
+          "type": "int"
+        }
+      },
+      "output": {
+        "path": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

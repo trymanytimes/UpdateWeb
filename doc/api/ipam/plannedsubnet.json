@@ -1,0 +1,23 @@
+{
+  "resourceType": "plannedsubnet",
+  "collectionName": "plannedsubnets",
+  "parentResources": [
+    "layout"
+  ],
+  "goStructName": "PlannedSubnet",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "ipnetv4": {
+      "type": "string"
+    },
+    "ipnetv6": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "string"
+    }
+  },
+  "collectionMethods": [
+    "GET"
+  ]
+}

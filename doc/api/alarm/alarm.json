@@ -1,0 +1,94 @@
+{
+  "resourceType": "alarm",
+  "collectionName": "alarms",
+  "goStructName": "Alarm",
+  "supportAsyncDelete": false,
+  "resourceFields": {
+    "conflictIp": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "conflictIpType": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "haCmd": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "level": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "masterIp": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "nodeIp": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "slaveIp": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "state": {
+      "type": "enum",
+      "validValues": [
+        "untreated",
+        "solved",
+        "ignored"
+      ]
+    },
+    "subnet": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "threshold": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    },
+    "thresholdType": {
+      "type": "string",
+      "description": [
+        "readonly"
+      ]
+    },
+    "value": {
+      "type": "uint",
+      "description": [
+        "readonly"
+      ]
+    }
+  },
+  "resourceMethods": [
+    "PUT"
+  ],
+  "collectionMethods": [
+    "GET"
+  ]
+}
