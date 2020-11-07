@@ -1,0 +1,216 @@
+/********************************************************************************
+ *
+ * @des ralt configuration service of ATE
+ *
+ * @file ate_ralt_plugin.proto
+ *
+ * @author lsp
+ *
+ * @date 4.18
+ * 
+ * @ver 1.2.1
+ *
+ * @copy rights reserved
+ *
+ ********************************************************************************/
+
+syntax = "proto3";
+//import "util.proto";
+
+package rcs;
+
+service RaltConfServ
+{
+  rpc optRaltGroup (OptRaltGroupReq) returns (OperResult) {} //管理配置组
+  rpc getRaltGroup (GetRaltGroupReq) returns (GetRaltGroupRsp) {} //获取配置组
+  rpc optRaltWebsite (OptRaltWebsiteReq) returns (OperResult) {} //管理升级网站
+  rpc getRaltWebsite (GetRaltWebsiteReq) returns (GetRaltWebsiteRsp) {} //获取升级网站
+  rpc getRaltSpecWebsite (GetRaltSpecWebsiteReq) returns (GetRaltSpecWebsiteRsp) {} //获取升级网站
+  rpc getRaltAvailIP (GetAvailIPReq) returns (GetAvailIPRsp) {} //获取可用IPv6地址
+  rpc uploadRaltCertPriKey (UploadCertPriKeyReq) returns (OperResult) {} //https配置，上传证书和私钥
+  rpc removeRaltCertPriKey (RemoveCertPriKeyReq) returns (OperResult) {}
+  rpc getRaltCertPriKey (GetCertPriKeyReq) returns (GetCertPriKeyRsp) {}
+  rpc suspendWebsite (SuspendWebsiteReq) returns (OperResult) {}
+  rpc myTest (MyTestReq) returns (OperResult) {}   //仅供调试用
+}
+message OperResult {
+    int32 ret_code = 1; //操作结果, 0成功, 错误码:100~199属于业务错误, 200~299属于集群错误, 300~399属于日志,统计 错误.
+    string ret_msg = 2; //相关信息, 英文描述.
+}
+
+message NULLMsgReq{
+}
+
+message NoArgReq
+{}
+
+message OptRaltGroupReq
+{
+  int32 iopt = 1;  //操作类型，1:增加;2:删除;3:修改。*以下类同的不再重复说明*
+  string strgroup_id = 2;   //配置组ID
+  string strgroup_name = 3;     //配置组名称
+  string strgroup_href_domain = 4;   //组配置外链域名
+  string strgroup_href_domain_ip_addr = 5;
+  int32 itransform_mod = 6;     //外链模式：1.路径模式；2.域名模式
+  int32 imax_session = 7;     //最大会话数
+  string strcluster_id = 8;    //集群组ID
+  FuncSwitcherInfo func_switcher = 9;
+  repeated RuleInfo rule = 10;
+}
+
+message GetRaltGroupReq
+{
+  string strgroup_id = 1;   //配置组ID，空字符串返回全部，否则单个
+}
+
+message GroupInfo
+{
+  string strgroup_id = 1;
+  string strgroup_name = 2;   //配置组名称
+  int32 iwebsite_num = 3;   //应用网站数量
+  string strcluster_id = 4;   //集群组ID
+  int32 itransform_mod = 5;
+  string strgroup_href_domain = 6;   //组配置外链域名
+  string strgroup_href_domain_ip_addr = 7;  //组配置外链域名地址
+  int32 imax_session = 8;
+  FuncSwitcherInfo func_switcher = 9;
+  repeated RuleInfo rule = 10;
+}
+
+message GetRaltGroupRsp
+{
+  repeated GroupInfo group_list = 1;  //配置组列表
+}
+
+message ProtocolMap
+{
+  string strprotocol_map_id = 1; //源目标协议端口映射ID
+  string strsrc_protocol = 2; //源协议
+  int32 isrc_port = 3; //源端口号
+  string strdst_protocol = 4; //目标协议
+  int32 idst_port = 5; //目标端口号
+}
+
+message WebsiteReqInfo
+{
+  string strdomain_id = 1;  //域名ID
+  string strgroup_id = 2;
+  string strsrc_domain = 3;   //源站域名或IP
+  string strdst_domain = 4;   //目标域名或IP
+  string strsrc_ip_addr = 5;   //源站IP
+  string strip_addr = 6;   //升级地址，IPv6或IPv4地址
+  repeated ProtocolMap protocol_map = 7; //源目标协议端口映射
+  string strwebsite_href_domain = 8;   //网站配置外链域名
+  int32 i64mod = 9; //1:ipv6到ipv4; 2:ipv4到ipv6；3：ipv4到ipv4；4：ipv6到ipv6
+  int32 istatus = 10;
+}
+
+message OptRaltWebsiteReq
+{
+  int32 iopt = 1;
+  repeated WebsiteReqInfo website = 2;
+}
+
+message GetRaltWebsiteReq
+{
+  repeated string strdomain_id = 1;
+}
+
+message WebsiteRspInfo
+{
+  string strdomain_id = 1;
+  string strgroup_id = 2;
+  string strdomain = 3;
+  string strcluster_id = 4;
+  string strip_addr = 5;
+  repeated ProtocolMap protocol_map = 6;
+}
+  
+message GetRaltWebsiteRsp
+{
+  repeated WebsiteRspInfo website = 1;
+}
+
+message GetRaltSpecWebsiteReq
+{
+  string strdomain_id = 1;  //指定返回
+}
+
+message GetRaltSpecWebsiteRsp
+{
+  repeated WebsiteReqInfo website = 1;
+}
+
+message IPBlock
+{
+  string strip_addr_start = 1; //起始地址
+  string strip_addr_end = 2; //结束地址
+  int32 iip_prefix = 3; //前缀（长度）
+}
+
+message GetAvailIPReq
+{
+  string strcluster_id = 1;
+    int32 network = 2; //1表示ipv6, 2表示ipv4
+    int32 count = 3;//查询的总数,默认值5个
+}
+
+message GetAvailIPRsp
+{
+  repeated string ip = 1; //可用地址
+}
+
+message UploadCertPriKeyReq
+{
+  string strdomain_id = 1;  
+  string strcert_fname = 2;  //证书文件名
+  bytes czcert_content = 3;  //证书文件内容
+  string strprikey_fname = 4;  //私钥文件名
+  bytes czprikey_content = 5;  //私钥文件内容
+}
+
+message RemoveCertPriKeyReq
+{
+  string strdomain_id = 1;  
+}
+
+message GetCertPriKeyReq
+{
+  string strdomain_id = 1;
+}
+
+message GetCertPriKeyRsp
+{
+  string strcert_fname = 2;  //证书文件名
+  string strprikey_fname = 4;  //私钥文件名
+}
+
+message FuncSwitcherInfo
+{
+  bool breplace_href = 1;  //是否升级外链
+  bool bhttps_to_http = 2;  //https外链翻译成http模式
+  bool bcheck_inet6_support = 3;  //ipv6支持度检测
+  bool binet6_cache = 4;  //ipv6缓存加速
+  string stricon_url = 5; //图标路径
+}
+
+message RuleInfo
+{
+  string strrule_id = 1; //规则ID
+  int32 irule_type = 2; //规则类型
+  int32 irule_subtype = 3; //规则子类型
+  string strsearch = 4; //规则搜索串
+  string strreplace = 5; //规则替换串
+}
+
+message SuspendWebsiteReq
+{
+  string strdomain_id = 1;
+  int32 istatus = 2;
+}
+
+message MyTestReq //仅供调试用
+{
+  string strmytest = 1;
+}
+

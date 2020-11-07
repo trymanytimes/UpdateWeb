@@ -1,0 +1,366 @@
+syntax = "proto3";
+
+package ate_proto;
+
+service RaltService {
+	//statistics
+	rpc getRaltStats (GetRaltStatsReq) returns (GetRaltStatsRsp) {}
+	rpc getStatsField (GetStatsFieldReq) returns (GetStatsFieldRsp) {}
+	rpc getHomePageData (HomePageReq) returns (HomePageRsp) {}
+	//cache
+	rpc showCacheData (CacheLookUpReq) returns (CacheResult) {}
+	//flow
+	rpc showFlowStatData (FlowStatLookUpReq) returns (FlowResult) {}
+	//logs
+	rpc showLogInfoData (LogInfoLookUpReq) returns (LogResult) {}
+	rpc getRaltLogs (GetRaltLogsReq) returns (stream RaltLogs) {}
+
+	//configuration
+	//basic config, main for record.config
+	rpc getBasicConfig (GetBasicConfigReq) returns (GetBasicConfigRsp) {}
+	rpc setBasicConfig (SetBasicConfigReq) returns (SetBasicConfigRsp) {}
+	//ralt.domain.conf
+	rpc getAllDomain (GetAllDomainReq) returns (GetAllDomainRsp) {}
+	rpc updateDomain (UpdateDomainReq) returns (UpdateDomainRsp) {}		//add modify delete
+	rpc getDomain (GetDomainReq) returns (GetDomainRsp) {}
+	rpc addDomain (AddDomainReq) returns (AddDomainRsp) {}
+	rpc deleteDomain (DeleteDomainReq) returns (DeleteDomainRsp) {}
+	//ralt.miscellaneous.conf
+	rpc getMisc (GetMiscReq) returns (GetMiscRsp) {}
+	rpc modMisc (ModMiscOpReq) returns (ModMiscOpRsp) {}
+	//ralt.rule.conf
+	rpc getRule (GetRuleReq) returns (GetRuleRsp) {}
+	rpc updateRule (UpdateRuleReq) returns (UpdateRuleRsp) {}
+	
+	//cache operate
+	rpc getCacheUrl (GetCacheUrlReq) returns (GetCacheUrlRsp) {}
+	rpc isUrlInCache (IsUrlInCacheReq) returns (IsUrlInCacheRsp) {}
+
+	//command
+	rpc getRaltStatus (RaltStatusReq) returns (stream RaltStatus) {}
+	//exec cmd
+	rpc execCmd (ExecCmdReq) returns (ExecCmdRsp) {}
+}
+
+//ats info
+message GetRaltStatsReq {
+	string ip_addr = 1;
+}
+
+message GetRaltStatsRsp{
+	uint32 start_time = 1;                               //开始时间
+	uint32 end_time = 2;                                 //结束时间
+
+	uint32 logs_space_used_mb = 3;                       //日志使用大小(单位mb)
+	uint32 logs_space_total_mb = 4;                      //日志空间大小(单位mb)
+
+	uint32 flow_incoming_requests = 5;                   //客户端请求数（浏览器-->ATS）
+	uint32 flow_incoming_responses = 6;                  //ATS响应数（ATS-->浏览器）
+	uint32 flow_total_client_connections_ipv4 = 7;       //ipv4客户端连接数
+	uint32 flow_total_client_connections_ipv6 = 8;       //ipv6客户端连接数
+	uint32 flow_total_server_connections = 9;            //回源连接数
+
+	uint64 cache_used_mb = 10;                           //缓存使用大小(单位mb)
+	uint64 cache_total_mb = 11;                          //缓存空间大小(单位mb)
+	uint32 cache_total_hits = 12;                        //缓存命中总数
+	float  cache_hit_ratio = 13;                         //缓存命中率
+
+	uint32 hostdb_total_hits = 14;                       //DNS缓存命中总数
+	float  hostdb_hit_ratio = 15;                        //DNS缓存命中率
+}
+
+message GetStatsFieldReq{
+	string ip_addr = 1;
+	string field_name = 2;
+}
+
+message GetStatsFieldRsp{
+	string value = 1;
+}
+
+message HomePageReq {
+	uint32 type = 1;
+}
+
+message HomePageRsp {
+	uint32 domain_num = 1;
+	uint32 cluster_device = 2;
+	uint64 app_transfor_bytes = 3;
+	uint32 app_transfor_connections = 4;
+	uint32 cache_total_hits = 5;
+	uint64 cache_bytes_total = 6;
+	uint64 cache_bytes_used = 7;
+	uint32 cache_num_docs = 8;
+}
+
+message CacheLookUpReq {
+	string ip_addr = 1;
+}
+
+message CacheResult {
+	uint32 cache_total_hits = 1;
+	uint64 bytes_total = 2;
+	uint64 bytes_used = 3;
+	uint32 num_docs = 4;
+	float cache_hit_ratio = 5;
+}
+
+message FlowStatLookUpReq {
+	string ip_addr = 1;
+}
+
+message FlowResult{
+	uint32 user_agent_current_connections_count = 1;
+	uint32 origin_server_current_connections_count = 2;
+	uint32 completed_requests = 3;
+	uint32 total_incoming_connections = 4;
+	uint32 incoming_requests = 5;
+	uint32 outgoing_requests = 6;
+	uint32 incoming_responses = 7;
+	uint32 total_client_connections = 8;
+	uint32 total_client_connections_ipv4 = 9;
+	uint32 total_client_connections_ipv6 = 10;
+	uint32 total_server_connections = 11;
+	uint64 user_agent_total_bytes = 12;
+	uint64 origin_server_total_bytes = 13;
+	float bandwidth_hit_ratio = 14;
+}
+
+message LogInfoLookUpReq {
+	string ip_addr = 1;
+}
+
+message LogResult{
+	uint32 log_files_space_mb_used = 1;
+	uint32 max_space_mb_for_logs = 2;
+}
+
+//ralt logs
+message GetRaltLogsReq{
+	string ip_addr = 1;
+}
+
+message LogField{
+	string timestamp = 1;
+}
+
+message RaltLogs{
+	bytes logs = 1;
+	LogField log_filed = 2;
+}
+
+//main for record.conf
+message GetBasicConfigReq{
+	string ip_addr = 1;
+}
+
+message BasicConfig {
+	uint32 logging_enabled = 1;            //取值：0-不启用日志； 1-开启错误； 2-开启事务日志； 3-错误日志和事务日志一起开启
+	uint32 max_space_mb_for_logs = 2;      //日志最大磁盘空间（单位为mb）
+	uint32 rolling_enabled = 3;            //日志是否备份	0-不开启； 1-开启日志（根据时间间隔备份）；2-开启日志（根据日志文件大小备份）
+	string server_ports = 4;               //ralt服务端口，默认值 8080 8080:ipv6
+	uint32 storage_cache_size = 5;         //缓存磁盘大小，单位为mb，默认值 250（最小值为128）
+	uint32 http_cache_enabled = 6;         //缓存开关，0：不开启 1：开启
+	uint32 connections_throttle = 7;       //最大并发量
+	string ip_resolve = 8;                 //回源网络类型
+}
+
+message GetBasicConfigRsp {
+	BasicConfig basic_config = 1;
+}
+
+message SetBasicConfigReq {
+	string ip_addr = 1;
+	BasicConfig basic_config = 2;
+}
+
+message SetBasicConfigRsp{
+	uint32 result = 1;
+}
+
+//ralt.domain.conf
+enum DomainType{
+	enum_member_domain = 0;
+	enum_subs_domain = 1;
+	enum_subs_domain_6to4 = 2;
+	enum_subs_domain_4to6 = 3;
+}
+
+message Domain{
+	DomainType type = 1;
+	string domain_str = 2;
+	string append_or_replace_str = 3;
+	string port = 4;
+}
+
+message GetAllDomainReq{
+	string ip_addr = 1;
+	uint32 page_size = 2;                     //每页会员数
+	uint32 page_number = 3;                   //页数
+}
+
+message GetAllDomainRsp{
+	repeated Domain domain = 1;
+	uint32 domain_total = 2;                 //会员总数
+}
+
+message UpdateDomainReq{
+	string ip_addr = 1;
+	repeated Domain domain = 2;
+}
+
+message UpdateDomainRsp{
+	uint32 result = 1;
+}
+
+message GetDomainReq{
+	string ip_addr = 1;
+	string domain_str = 2;              //根据域名模糊查询
+	string transformed_domain = 3;      //根据转换域名模糊查询
+	uint32 page_size = 4;                     //每页会员数
+	uint32 page_number = 5;                   //页数
+}
+
+message GetDomainRsp{
+	repeated Domain domain = 1;
+	uint32 domain_total = 2;                 //会员总数
+}
+
+message AddDomainReq{
+	string ip_addr = 1;
+	Domain domain = 2;
+}
+
+message AddDomainRsp{
+	uint32 result = 1;
+}
+
+message DeleteDomainReq{
+	string ip_addr = 1;
+	string domain_str = 2;
+}
+
+message DeleteDomainRsp{
+	uint32 result = 1;
+}
+
+//ralt.miscellaneous.conf
+enum MiscKey{
+	enum_ralt_filter_type_default = 0;
+}
+
+enum MiscSwitch{
+	switch_off = 0;
+	switch_on = 1;
+}
+
+message GetMiscReq{
+	string ip_addr = 1;
+}
+
+message GetMiscRsp{
+	MiscSwitch ralt_filter_type_default = 1;
+}
+
+message Misc{
+	MiscKey key = 1;
+	MiscSwitch value = 2;
+}
+
+message ModMiscOpReq{
+	string ip_addr = 1;
+	Misc misc = 2;
+}
+
+message ModMiscOpRsp{
+	uint32 result = 1;
+}
+
+//ralt rule
+enum RuleType{
+	enum_begin = 0;					//该字段没有用，因为proto3的enum必须从0开始，此处是为了保持与ralt的规则类型一直
+	enum_top_level_domain = 1;
+	enum_hex_domain = 2;
+	enum_js_buildin_var = 3;
+	enum_ipv4_addr = 4;
+	enum_email_atsign = 5;
+	enum_no_modify = 6;
+	enum_unhandle_protocol = 7;
+	enum_assist_char = 8;
+	enum_subs_string = 9;
+	enum_rsubs_string = 10;
+	enum_ipv6_addr = 11;
+	enum_just_replace = 12;
+	enum_just_restore = 13;
+}
+
+message Rule{
+	RuleType type = 1;
+	string search = 2;
+	string replace = 3;
+	string append = 4;
+	string ralt_domain = 5;
+}
+
+message GetRuleReq{
+	string ip_addr = 1;
+}
+
+message GetRuleRsp{
+	repeated Rule rule = 1;
+}
+
+message UpdateRuleReq{
+	string ip_addr = 1;
+	repeated Rule rule = 2;
+}
+
+message UpdateRuleRsp{
+	uint32 result = 1;
+}
+
+//cache operate
+message GetCacheUrlReq{
+	string ip_addr = 1;
+}
+
+message GetCacheUrlRsp{
+	string all_url = 1;
+}
+
+message IsUrlInCacheReq{
+	string ip_addr = 1;
+	string url = 2;
+}
+
+message IsUrlInCacheRsp{
+	uint32 result = 1;
+}
+
+//ralt status
+message RaltStatusReq {
+	string ip_addr = 1;
+}
+
+message RaltStatus {
+	string ip_addr = 1;
+	uint32 status = 2;
+}
+
+//exec cmd
+enum CommandType{
+	ralt_start = 0;
+	ralt_stop = 1;
+	ralt_restart = 2;
+	cache_clear = 3;
+	reload_config = 4;
+}
+
+message ExecCmdReq {
+	string ip_addr = 1;
+	CommandType cmd = 2;
+}
+
+message ExecCmdRsp {
+	uint32 result = 1;
+}

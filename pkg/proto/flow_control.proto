@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+import "util.proto";
+
+package ate_flow_control;
+
+service FlowControlManager{
+    rpc setUserBandwidth(UserBandwidthReq) returns (OperResult){} //设置用户带宽配置.修改的时候调用者必须全部参数都传送过来.
+    rpc setApplicationBandwidth(AppBandwidthReq) returns (OperResult){} //设置应用带宽配置.修改的时候调用者必须全部参数都传送过来.
+    rpc setApplicationConcurrency(AppConcurReq) returns (OperResult){} //设置应用并发量配置.修改的时候调用者必须全部参数都传送过来.
+}
+
+message UserBandwidthReq{
+    string id = 1; //集群下唯一ID
+    string cluster_id = 2; //集群编号
+    int32 oper_type = 3;//操作类型:增删改三种操作. 1表示增加, 2表示删除, 3表示修改.
+    string ip_addr = 4; //IP地址
+    int32 upload_flow = 6; //上行带宽(Kbps)
+    int32 download_flow = 7; //下行带宽(Kbps)
+    int32 strategy = 8; //策略, 1表示限制最大带宽, 2表示保证最小带宽.
+    string comment = 9; //备注
+}
+
+message AppBandwidthReq{
+    string id = 1; //集群下唯一ID
+    string cluster_id = 2; //集群编号
+    int32 oper_type = 3;//操作类型:增删改三种操作. 1表示增加, 2表示删除, 3表示修改.
+    string domain_or_ip = 4; //网站域名/IP地址
+    int32 upload_flow = 5; //上行带宽(Kbps)
+    int32 download_flow = 6; //下行带宽(Kbps)   
+    int32 strategy = 7; //策略, 1表示限制最大带宽, 2表示保证最小带宽.
+    string comment = 8; //备注 
+}
+
+message AppConcurReq{
+    string id = 1; //集群下唯一ID
+    string cluster_id = 2; //集群编号
+    int32 oper_type = 3;//操作类型:增删改三种操作. 1表示增加, 2表示删除, 3表示修改.
+    string domain_or_ip = 4; //网站域名/IP地址
+    int32 tcp_concurrency = 5; //TCP并发量
+    int32 tcp_new_connection = 6; //TCP新建速率
+    string comment = 7; //备注 
+}

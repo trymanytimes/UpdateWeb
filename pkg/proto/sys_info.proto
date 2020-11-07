@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package sysinfo;
+
+service SysInfo {
+
+	//system info
+	rpc getCpuUsage (GetCpuUsageReq) returns (GetCpuUsageRsp) {}
+	rpc getMemUsage (GetMemUsageReq) returns (GetMemUsageRsp) {}
+	rpc getMemTotal (GetMemTotalReq) returns (GetMemTotalRsp) {}
+	rpc getDiskUsage (GetDiskUsageReq) returns (GetDiskUsageRsp) {}
+	rpc getDiskTotal (GetDiskTotalReq) returns (GetDiskTotalRsp) {}
+	rpc getHardwareInfo (GetHardwareInfoReq) returns (GetHardwareInfoRsp) {} 
+}
+
+//cpu usage
+message GetCpuUsageReq{
+        string device_node_id = 1;
+}
+
+message GetCpuUsageRsp{
+        string cpu_usage = 1;
+}
+
+//memory usage
+message GetMemUsageReq{
+        string device_node_id = 1;
+}
+
+message GetMemUsageRsp{
+        string mem_usage = 1;
+}
+
+//mem total
+message GetMemTotalReq{
+        string device_node_id = 1;
+}
+
+message GetMemTotalRsp{
+        string mem_total = 1;
+}
+
+//disk usage
+message GetDiskUsageReq{
+        string device_node_id = 1;
+}
+
+message GetDiskUsageRsp{
+        string disk_usage = 1;
+}
+
+//disk total
+message GetDiskTotalReq{
+        string device_node_id = 1;
+}
+
+message GetDiskTotalRsp{
+        string disk_total = 1;
+}
+
+message GetHardwareInfoReq{
+     string device_id  = 1;
+}
+
+message GetHardwareInfoRsp{
+     string cpu_usage = 1;
+     string mem_usage = 2;
+     string disk_usage = 3;
+}

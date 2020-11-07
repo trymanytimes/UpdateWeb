@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message OperResult {
+    int32 ret_code = 1; //操作结果, 0成功, 错误码:100~199属于业务错误, 200~299属于集群错误, 300~399属于日志,统计 错误.
+    string ret_msg = 2; //相关信息, 英文描述.
+}
+
+message NULLMsgReq{
+}
+
+

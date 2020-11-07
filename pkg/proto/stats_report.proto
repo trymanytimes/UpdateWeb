@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+import "ate_util.proto";
+package ate_stats_report;
+
+// The greeting service definition.
+service AteStatsReport {
+  rpc sndStatsData (SndStatsDataReq) returns (OperResult) {} 
+}
+
+message StatsData
+{
+    string strhost_id = 1;
+    string strdomain_or_ip = 2;
+    string strport = 3;
+    uint64 uireq_to_ate_byte = 4;
+    uint64 uireq_to_source_byte = 5;
+    uint64 uiresp_from_ate_byte = 6;
+    uint64 uiresp_from_source_byte = 7;
+    int32 ireq_count = 8;
+}
+
+message SndStatsDataReq
+{
+    int32 component_type = 1; //1 stands for the ralt, 2 stands for the vpp
+    repeated StatsData stats_data = 2;
+}

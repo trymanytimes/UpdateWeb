@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+import "ate_util.proto";
+
+package ate_security;
+
+service SecurityManager{
+    rpc setWAF(WAFSwitchReq) returns (OperResult){} //设置WAF配置.
+    rpc setNetworkSecurity(NetworkSecurityReq) returns (OperResult) {} //设置网络安全
+}
+
+message AttackCheck{
+    bool directory_traversal_attacks = 1; //目录遍历攻击检查
+    bool remote_file_inclusion_attacks = 2; //远程文件包含检查
+    bool unix_command_injection = 3; //系统命令注入检查
+    bool php_injection_attacks = 4; //PHP注入攻击检查
+    bool xss_attack_detected_via_lib_injection = 5; //XSS注入攻击检查
+    bool sql_injection_attacks = 6; //SQL注入检查
+    bool possible_session_fixation_attacks = 7;  //session fixation攻击
+}
+
+message LeakageCheck{
+    bool directory_listing_leakage = 1; //目录列表泄漏检查
+    bool sql_errors_leakage = 2; //SQL错误泄漏检查
+    bool java_source_code_leakage = 3; //Java源代码泄漏检查
+    bool php_error_message_leakage = 4; //PHP错误泄漏检查
+    bool iis_errors_leakage = 5; //IIS错误泄漏检查
+}
+
+message OtherCheck{
+    bool ip_reputation_block_flag_check = 1; //IP信誉检查
+    bool http_allowed_request_methods_check = 2; //HTTP模式检查
+    bool dos_defend_check = 3; //DoS防护检查
+    bool vulnerability_scanner_check = 4; //漏洞扫描检查
+    bool enforce_http_rfc_check = 5; //HTTP规范强化检查
+    bool http_request_smuggling_attack = 6; //HTTP隐藏请求攻击检查
+    bool correlated_attack_check = 7; //相关性攻击检查
+}
+
+message WAFSwitchReq{
+    string cluster_id = 1; //集群id
+    AttackCheck attack_check = 2; //常见攻击
+    LeakageCheck leakage_check = 3; //HTTP协议检查
+    OtherCheck other_check = 4; //可选规则集
+}
+
+message NetworkSecurityRule{
+    string safe_rule = 1; //安全规则
+    int32 rule_threshold = 2; //阈值
+    string comment = 3; //注释
+    bool switches = 4; //开关
+}
+
+message NetworkSecurityReq{
+    string cluster_id = 1; //集群ID
+    NetworkSecurityRule  rule = 2;//规则项
+}

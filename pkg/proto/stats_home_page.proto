@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+
+
+package ateStatsHomePage;
+// The greeting service definition.
+service AteStatsHomePage {
+
+  //homepage stats
+  rpc showHomePageData (ShowHomePageDataReq) returns (ShowHomePageDataRsp) {}                           //Í³¼ÆÉè±¸ºÍ·şÎñÕı³£ºÍÒì³£ÊıÁ¿
+  rpc showHomePageFlowData(ShowHomePageFlowDataReq) returns (ShowHomePageFlowDataRsp) {}                //µ±Ç°Éè±¸µÄÍøÂçÁ÷Á¿Í³¼Æ
+  rpc showHomePageVisitorData(ShowHomePageVisitorDataReq) returns(ShowHomePageVisitorDataRsp) {}        //Ó¦ÓÃ²ãºÍÍøÂç²ãµÄ·ÃÎÊÁ¿
+  rpc showDomainVisitorData(ShowDomainVisitorDataReq) returns(ShowDomainVisitorDataRsp) {}               //µ¥¸öÓòÃûµÄÓ¦ÓÃ·ÃÎÊÁ¿
+}
+
+//show the information of cluster
+message ShowHomePageDataReq {
+	string cluster_id = 1;//¼¯ÈºID
+}
+
+message ShowHomePageDataRsp {	
+        uint32 domain_is_normal =1;									//Éı¼¶ÓòÃûÕı³£ÊıÁ¿
+        uint32 domain_is_abnormal =2;								//Éı¼¶ÓòÃûÒì³£ÊıÁ¿
+        uint64 current_session_total_number=3;			//¼¯ÈºHTTP»á»°×ÜÊı
+        uint32 normal_ipv6_ipaddr_number=4;					//ÒµÎñIPv6µØÖ·Õı³£Êı
+        uint32 abnormal_ipv6_ipaddr_number=5;				//ÒµÎñIPv6µØÖ·Òì³£Êı
+        uint32 normal_ipv4_ipaddr_number=6;					//ÒµÎñIPv4µØÖ·Õı³£Êı
+        uint32 abnormal_ipv4_ipaddr_number=7;				//ÒµÎñIPv4µØÖ·Òì³£Êı	        
+        uint32 normal_node_number=8;								//Õı³£Éè±¸ÊıÁ¿ 
+        uint32 abnormal_node_number=9;							//Òì³£Éè±¸ÊıÁ¿        
+}
+
+
+//device flow stats
+message ShowHomePageFlowDataReq {
+	string device_id = 2;//Éè±¸ID
+}
+
+
+message DeviceFlowData{
+   			 uint64 current_device_v4_up_bytes = 1;            //µ±Ç°Éè±¸v4ÉÏĞĞÍøÂçÁ÷Á¿
+         uint64 current_device_v4_down_bytes = 2;          //µ±Ç°Éè±¸v4ÏÂĞĞÍøÂçÁ÷Á¿
+         uint64 current_device_v6_up_bytes = 3;            //µ±Ç°Éè±¸v6ÉÏĞĞÍøÂçÁ÷Á¿
+         uint64 current_device_v6_down_bytes =4;           //µ±Ç°Éè±¸v6ÏÂĞĞÍøÂçÁ÷Á¿ 
+	 uint32 current_device_connections = 5;
+         uint64 timestamp = 6 ;														 //Ê±¼ä´Á
+}
+
+
+message ShowHomePageFlowDataRsp {	
+				
+				repeated DeviceFlowData  up_dowm_flow =1 ; 				//ÉÏÏÂĞĞÁ÷Á¿  
+}
+
+message ShowHomePageVisitorDataReq {
+         string cluster_id = 1;						//¼¯Èºid
+}
+
+message VisitorData{
+				uint64 http_visitor_number = 1;						//Ó¦ÓÃ²ã·ÃÎÊÁ¿
+        uint64 nete_visitor_number = 2;						//ÍøÂç×ª»»·ÃÎÊÁ¿
+        uint64 timestamp = 3 ;										//Ê±¼ä´Á
+}
+
+message ShowHomePageVisitorDataRsp {
+        repeated VisitorData ats_nete_visitor_num = 1;
+}
+
+
+message  ShowDomainVisitorDataReq{
+				 string cluster_id = 1;										//¼¯Èºid 				 
+}
+message VisitDomainNum
+{
+    uint64 visit_domain_num = 1;    //¿¿¿¿¿¿¿
+    uint64 timestamp = 2;           //¿¿¿
+}
+
+message DomainVisitor{
+				repeated 	VisitDomainNum visit_host_number = 1;		//¿¿¿¿¿¿¿
+				string member_domain = 2;								//¿¿¿¿
+}
+
+message ShowDomainVisitorDataRsp{
+				repeated  DomainVisitor domain_visit_num =1;			//¿¿¿¿¿¿
+}

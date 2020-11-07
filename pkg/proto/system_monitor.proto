@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package systemmonitor;
+
+service SystemMonitor {
+
+	// system monitor info
+	rpc getClusterState (GetClusterStateReq) returns (GetClusterStateRsp) {}
+	rpc getDevMonitorInfo (GetDevMonitorInfoReq) returns (GetDevMonitorInfoRsp) {}
+}
+
+//cluster domain state info 
+message GetClusterStateReq{
+        string cluster_id = 1;//集群id
+        repeated string domain_vip6addr = 2;//域名对应虚地址
+}
+
+message DomainVipAddrState{
+    string domain_vip_addr = 1; //域名对应虚地址
+    string cluster_domain_state = 2;//集群域名状态
+}
+
+message GetClusterStateRsp{
+	repeated  DomainVipAddrState  domain_state_stats = 1;//集群域名状态统计
+}
+//device monitor info 
+message GetDevMonitorInfoReq{
+        string device_id  = 1;//设备节点id
+}
+
+message GetDevMonitorInfoRsp{
+        string device_type = 1;//设备类型
+        string ats_state =2;//ats服务状态
+        string cluster_state =3;//集群服务状态
+        string network_sercurity_state = 4;//网络安全服务状态
+        string waf_service_state =5;//WAF服务状态
+        string qos_service_state = 6;//Qos服务状态
+        string device_name  = 7;//设备名称
+	string vpp_service_state = 8;//网络转换服务
+}
+

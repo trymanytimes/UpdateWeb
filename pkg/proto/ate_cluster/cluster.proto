@@ -1,0 +1,224 @@
+syntax = "proto3";
+package ate_cluster;
+
+//import "util.proto";
+
+service ClusterManager{
+    rpc setDeviceState(DeviceStateReq) returns (OperResult) {} //设备服务状态, 入参DeviceStateReq:设备ID 设备名称 应用升级服务	集群服务	网络安全服务	WAF服务	QoS 操作类型(启用|停用|重启), 返回OperResult:操作是否成功,错误信息.
+    rpc getDeviceState(HostIDReq) returns (DeviceStateRsp){} //获取设备当前服务的状态.
+    rpc qryOneCluster(ClusterIDReq) returns (ClusterDetailInfoRsp) {} //查询单个集群的详细信息,包含socs配置信息, 应用升级信息, 日志信息, 缓存信息4个模块.
+    rpc setCluster(ClusterPublicInfoReq) returns (OperResult) {} //新增/编辑集群配置.ClusterPublicInfoReq,集群配置.
+    rpc qryClusterSimpleInfo(ClusterIDListReq) returns (ClusterSimpleInfoRsp) {} //查询集群列表简要信息, ClusterIDListReq表示集群编号, 返回集群状态, IPv4广播地址, IPv6广播地址, 负载均衡策略.
+    rpc getDeviceUsage(HostIDReq) returns (DeviceUsageRsp) {} //设备物理状态监控, HostIDReq:设备id, 返回(DeviceUsageRsp):CPU, 内存, 磁盘情况, 是否离线(退出集群).
+    rpc isExistDevice(ManageIPReq) returns (IsExistResp) {} //是否存在某个设备. 入参是管理ip, 出参表示是否存在. 1表示存在,2 表示不存在.
+    rpc getDevices(DeviceIDReq) returns (DevicesRsp) {} //查询设备. 入参DeviceID表示设备的hostid列表, 出参DevicesRsp描述了每个设备的具体信息.
+    rpc qryUsedVIPCount(ClusterIDReq) returns (VIPCountRsp) {} //查询集群已经使用的VIP数量.
+    rpc qryUsedVIP(UsedVIPReq) returns (VIPListRsp) {} //查询集群已经使用的VIP.
+    rpc qryServiceList(HostIDReq) returns (ServiceListRsp) {} //查询一个设备上所有的已经安装的服务.
+    rpc qryFilterTypes(ClusterIDReq) returns (RaltFilterTypeRsp) {} //查询集群应用升级模块过滤类型
+    rpc setFilterTypes(RaltFilterTypeReq) returns (OperResult) {} //设置应用升级模块过滤类型.
+}
+
+message OperResult {
+    int32 ret_code = 1; //操作结果, 0成功, 错误码:100~199属于业务错误, 200~299属于集群错误, 300~399属于日志,统计 错误.
+    string ret_msg = 2; //相关信息, 英文描述.
+}
+
+message NULLMsgReq{
+}
+
+message ClusterIDReq {
+    string cluster_id = 1; //集群编号
+}
+
+message HostIDReq {
+    string host_id = 1; //设备编号
+}
+
+message ClusterIDListReq{
+    repeated string cluster_id = 1; //集群编号
+}
+
+message ServiceOperation{
+    string service_key = 1; //服务关键字
+    int32 operation = 2; //1启动, 2关闭, 3重启.
+}
+
+message OneClusterInfo{
+    string cluster_id = 1;
+    int32 state = 2; //1重启中,2启动,3停用
+    string multi_addr = 3; //IPv4组播地址
+    string multi_port = 4; //IPv6组播地址
+    string balance_type = 5; //负载均衡方式 1表示哈希, 2表示轮询, 3表示自转发.
+}
+
+message ClusterSimpleInfoRsp{
+    repeated OneClusterInfo cluster_info = 1;
+}
+
+message DeviceStateReq {
+    string host_id = 1; //设备id
+    repeated ServiceOperation service_oper = 2; //服务操作. 当该项不传,表示对所有的服务进行重启.
+}
+
+message ServiceState {
+    string service_key = 1; //服务的关键字
+    string service_chinese_name = 2; //服务中文名字
+    int32 oper_result = 3; //服务状态:1启用, 2停用
+}
+
+message DeviceStateRsp {
+    repeated ServiceState service_state = 1;
+}
+
+message ClusterDetailInfoRsp{
+    ClusterBalanceInfo socs_info = 1;
+    ClusterAppInfo app_info = 2;
+    ClusterLogInfo log_info = 3;
+    ClusterCacheInfo cache_info = 4;
+}
+
+message VipInterval {
+    string begin_vip = 1; //IP 开始地址
+    string end_vip = 2; //IP 结束地址
+    int32 length = 3;  //网段长度
+}
+
+message NodeHost{
+    string host_id = 1;
+    string node_id = 2;
+}
+
+message ClusterBalanceInfo {
+    string cluster_name = 2; //集群域
+    int32 keep_alive_time = 4; //心跳时间
+    int32 dead_time = 5; //宕机时间
+    int32 stable_time = 6; //选举前等待时间
+    string cluster_type = 7; //集群类型 如6ATE,6EAG
+    string multi_addr = 8; //IPv4或者IPv6组播地址
+    string multi_port = 9; //组播地址的端口
+    repeated NodeHost node_host = 10; //设备列表(可选),和新建的时候不一样, 因为新建的时候需要关联host_id,所以用host_name.
+    int32 balance_type = 11; //负载策略 1表示哈希, 2表示轮询, 3表示自转发.
+    repeated VipInterval ipv4_vip = 12; //IPv4 列表
+    repeated VipInterval ipv6_vip = 13; //IPv6 列表
+    string max_connection = 14; //最大会话数
+}
+
+message ResourceType{
+    repeated string ralt_filter_types = 1; //将会升级的http响应报文类型, 如text/html; 如text/css text/xml text/plain;如text/javascript text/js等.
+    repeated string ignore_subfix = 2; //将不升级的url资源后缀, 如mp3
+}
+
+message ForbiddenBrowser {
+    string browser_name = 1; //浏览器名称
+    repeated string domain = 2; //禁止的相关域名.
+}
+
+message ClusterAppInfo {
+    ResourceType resource_type = 3; //升级资源类型,
+    int32 ralt_referer_default = 4; //防盗链开关, 1开启, 2关闭.
+    string insert_request_via_str = 5; //请求头via设置, 没有值表示不添加内容; 有值表示添加所填写内容.
+    string insert_response_via_str = 6; //响应头via设置, 没有值表示不添加内容; 有值表示添加所填写内容.
+    repeated ForbiddenBrowser forbidden_browser= 7; //禁止特定浏览器访问
+    int32 insert_x_forwarded_for = 8; //请求头X-Forwarded-For设置, 1表示不修改, 2表示插入回源请求报文头客户的IP.
+    string redirect = 9; //301,302重定向时是否增加令牌开关, on表示开启, off表示关闭.
+}
+
+message ClusterLogInfo {
+    int32 is_on = 3; //日志开关 1表示开启, 2表示关闭.
+    int32 node_log_size = 4; //单设备日志容量(M)
+    int32 is_debug = 5; //DEBUG模式是否开启, 1开启, 2关闭.
+    string debug_type = 6; //DEBUG日志类型, 如ralt, http, ralt|http.
+    string remote_log_ip = 7; //日志服务器（SYSLOG）IP
+    int32 remote_log_port= 8; //对应端口
+}
+
+message ClusterCacheInfo {
+    int32 is_cache_open = 3; //缓存开关, 1表示开始, 2表示关闭.
+    int32 is_cookie_cache_open = 4; //Cookie是否缓存, 1表示不缓存任何的Cookie, 2表示为任何类型缓存Cookie, 3只为图片缓存cookie, 4只为文本缓存cookie.
+    int32 ram_cache_size = 5; //内存缓存大小(M),存储包含单位.如256M, 只有"-1"取值不带单位, 表示系统自动优化该参数
+    int32 cache_db_size = 6; //磁盘缓存大小(M)
+    string cache_db_path = 7; //缓存目录
+    int32 cache_strategy = 8; //缓存更新策略, 1,2,3,4,5. 1表示使用缓存指引或者启发式的；2如果启发式的则认为缓存内容过时;3认为缓存内容总是过时，需要重新生效；4绝不过时；5除非请求报文有If-Modified-Since向，否则同1；
+    string required_headers = 9; //缓存资源需携带HTTP首部字段, 1/2/3, 1表示不需要报文头限制就可缓存内容；2报文头需要Last-Modified项或者显式设置了生存周期Expires 或者设置Cache-Control: max-age项可以缓存；3显式的写明了Expires或者Cache-Control: max-age项。
+}
+
+message ClusterPublicInfoReq {
+    string cluster_id = 1; //集群编号
+    int32 oper_type = 2; //操作类型:增删改三种操作. 1表示增加, 2表示删除, 3表示修改.
+    ClusterBalanceInfo balance_info = 3;
+    ClusterAppInfo app_info = 4;
+    ClusterLogInfo log_info = 5;
+    ClusterCacheInfo cache_info = 6;
+}
+
+message DeviceUsageRsp {
+    string cpu_usage= 1; //CPU利用率
+    string mem_usage = 2; //内存利用率
+    string disk_usage = 3; //磁盘利用率
+    int32 is_offline = 4; //是否离线(退出集群). 1在线, 2离线.
+}
+
+message ManageIPReq{
+    int32 is_ipv4 = 1; //1 表示IPv4地址, 2表示IPv6地址
+    string ip = 2; //IP for V4 or V6 管理地址
+}
+
+message IsExistResp{
+    int32 is_exist = 1; //1表示存在, 2表示不存在.
+    string host_id = 2; //设备id
+}
+
+message DeviceIDReq {
+    repeated string host_id = 1; //设备编号列表
+}
+
+message Device {
+    string host_id = 1; //设备ID
+    string host_name = 2; //设备名称
+    string device_type = 3; //设备类型,如6ATE,6EAG
+    string ipv4_addr = 4; //IPv4管理地址
+    string ipv6_addr = 5; //IPv6管理地址
+}
+
+message DevicesRsp {
+    repeated Device device = 1; //设备详情列表
+}
+
+message UsedVIPReq{
+    bool is_ipv4 = 1; //默认IPv6，当0时表示IPv6，1表示IPv4。
+    string cluster_id = 2;//集群ID.
+}
+
+message VIPCountRsp {
+    int32 used_vip4_count = 1; //已经使用的V4的VIP数量
+    int32 used_vip6_count = 2; //已经使用的V6的VIP数量
+}
+
+message VIPListRsp{
+    repeated string vip = 1; //已经使用的VIP，可以是IPv4的地址，也可以是IPv6地址。
+}
+message ServiceMsg{
+    string key_name = 1; //服务的英文名称或编号
+    string chinese_name = 2; //服务的中文名称,或者描述.
+}
+
+message ServiceListRsp{
+    repeated ServiceMsg service = 1;//服务
+}
+
+message FilterType{
+    string id = 1; //编号
+    string filter_content = 2; //过滤内容
+    string comment = 3; //备注
+}
+
+message RaltFilterTypeRsp{
+    repeated FilterType filter_type = 1;//报文头的Content-Type的过滤类型
+}
+
+message RaltFilterTypeReq{
+    string cluster_id = 1; //集群编号
+    int32 oper_type = 2; //操作类型:增删改三种操作. 1表示增加, 2表示删除, 3表示修改.
+    FilterType filter_type = 3;//报文头的Content-Type的过滤类型
+}

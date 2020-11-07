@@ -1,0 +1,283 @@
+syntax = "proto3";
+
+package ate_rdns;
+
+service RdnsManager {
+    //正向域名
+    rpc GetForward(ReqStatus) returns (ForwardInfos) {}
+    rpc OperateForward(ForwardInfos) returns (RespStatus) {}
+    //正向域名记录
+    rpc GetDomain(ReqStatus) returns (DomainInfos) {}
+    rpc OperateDomain(DomainInfos) returns (RespStatus) {}
+    //正向域名使能
+    rpc EnableDomain(EnableInfos) returns (RespStatus) {}
+    
+    //反向ip
+    rpc GetBackward(ReqStatus) returns (BackwardInfos) {}
+    rpc OperateBackward(BackwardInfos) returns (RespStatus) {}
+    //反向ip使能
+    rpc EnableBackward(EnableInfos) returns (RespStatus) {}
+    
+    //递归解析
+    rpc GetRecursion(ReqStatus) returns (RecursionInfo) {}
+    rpc UpdateRecursion(RecursionInfo) returns (RespStatus) {}
+    //转发配置
+    rpc GetTransfer(ReqStatus) returns (TransferInfos) {}
+    rpc OperateTransfer(TransferInfos) returns (RespStatus) {}
+    //转发使能
+    rpc EnableTransfer(EnableInfos) returns (RespStatus) {}
+    
+    //服务配置
+    rpc GetSysConf(ReqStatus) returns (SysConfs) {}
+    rpc UpdateSysConf(SysConfs) returns (RespStatus) {}
+
+    //主机网口
+    rpc GetHostNetwork(ReqStatus) returns (HostNetworkInfos) {}
+    //服务监控
+    rpc GetSysMonitor(ReqStatus) returns (SysMonInfos) {}
+
+    //链路类型
+    rpc GetLinkIsp(ReqStatus) returns (LinkIspInfos) {}
+    rpc OperateLinkIsp(LinkIspInfos) returns (RespStatus) {}
+    //链路端口
+    rpc GetLinkPort(ReqStatus) returns (LinkPortInfos) {}
+    rpc OperateLinkPort(LinkPortInfos) returns (RespStatus) {}
+    //链路端口使能
+    rpc EnableLinkPort(EnableInfos) returns (RespStatus) {}
+    
+    //ip库
+    rpc GetLinkIp(ReqStatus) returns (LinkIpInfos) {}
+    rpc OperateLinkIp(LinkIpInfos) returns (RespStatus) {}
+    
+    //访问控制
+    rpc GetACL(ReqStatus) returns (ACLInfos) {}
+    rpc OperateACL(ACLInfos) returns (RespStatus) {}
+    //访问控制使能
+    rpc EnableACL(EnableInfos) returns (RespStatus) {}
+
+    //正向域名解析状态数量
+    rpc GetForwardStatusNum(ForStatusNumInfos) returns (ForStatusNumInfos) {}
+    //正向域名记录解析状态
+    rpc GetForwardStatus(ForStatusInfos) returns (ForStatusInfos) {}
+    //反向域名记录解析状态
+    rpc GetBackwardStatus(BackStatusInfos) returns (BackStatusInfos) {}
+}
+
+//操作类型
+enum OperType {
+    NONE = 0;                       //无操作或者查询
+    PUT = 1;                        //插入
+    DEL = 2;                        //删除
+}
+
+//通用请求
+message ReqStatus {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    repeated uint64 id = 2;         //记录id，数量为0，获取全部记录
+}
+
+//通用响应
+message RespStatus {
+    int32 code= 1;                  //状态码
+    string msg= 2;                  //状态信息
+}
+
+
+//正向域名信息
+message ForwardInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型
+    repeated ForwardInfo ev = 3;    //记录（新增、编辑、删除操作使用）
+}
+
+message ForwardInfo {
+    uint64 id = 1;                  //记录序号
+    string domain = 2;              //域名
+    string reference = 3;           //备注
+}
+
+//正向域名记录信息
+message DomainInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型
+    repeated DomainInfo ev = 3;     //记录（新增、编辑、删除操作使用）
+}
+
+message DomainInfo {
+    uint64 id = 1;                  //记录序号
+    uint64 for_id = 2;              //域名记录序号(ForwardInfo--id)
+    string name = 3;                //记录主机名
+    string type = 4;                //记录类型
+    uint64 isp_id = 5;              //解析路线（关联到智能链路--链路类型）
+    string ip = 6;                  //记录ip
+    int32 ttl = 7;                  //记录时间
+    int32 mx = 8;                   //MX优先级（只有MX类型使用，范围1 - 50，其他类型用0填充）
+    bool enable = 9;                //记录使能
+}
+
+//使能信息
+message EnableInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    uint64 id = 2;                  //记录序号
+    bool enable = 3;                //记录使能
+}
+
+//反向ip信息
+message BackwardInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型
+    repeated BackwardInfo ev = 3;   //记录（新增、编辑、删除操作使用）
+}
+
+message BackwardInfo {
+    uint64 id = 1;                  //记录序号
+    string ip = 2;                  //记录ip
+    string type = 3;                //记录类型（A/AAAA，界面不显示）
+    string domain = 4;              //记录域名
+    int32 ttl = 5;                  //记录时间
+    bool enable = 6;                //记录使能
+}
+
+//递归解析信息
+message RecursionInfo {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    bool recursion_enable = 2;      //递归使能
+    bool dns64_enable = 3;          //dns64模块
+    bool dns64_synthall = 4;        //dns64把所有A合成AAAA
+    string dns64_prefix = 5;        //dns64合成前缀（dns64模块启用时必须填）
+}
+
+//转发配置信息
+message TransferInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型
+    repeated TransferInfo ev = 3;   //记录（新增、编辑、删除操作使用）
+}
+
+message TransferInfo {
+    uint64 id = 1;                  //记录序号
+    string domain = 2;              //域名
+    string ip = 3;                  //转发ip
+    bool enable = 4;                //状态使能
+    string reference = 5;           //备注
+}
+
+//服务配置信息
+message SysConfs {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    SysConf sys = 2;                //服务配置
+    repeated ServiceIPInfo ip = 3;  //服务IP记录
+}
+
+message SysConf {
+    int32 port = 1;                 //系统端口
+    bool log_enable = 2;            //日志记录
+    bool cname_same = 3;            //cname是否和A/AAAA记录同名的使能
+    bool cname_priority = 4;        //cname是否优先于A/AAAA同名记录返回的使能
+    bool link_enable = 5;           //智能链路功能（智能链路的开关，配置在智能链路选项中）
+    bool tcp_enable = 6;            //tcp查询
+}
+
+message ServiceIPInfo {
+    string ip = 1;                  //服务ip(虚ip）
+}
+
+//主机网口
+message HostNetworkInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    repeated string eth = 2;        //主机网口（用于链路端口的card选择）
+}
+
+//服务监控信息
+message SysMonInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    repeated SysMonInfo ev = 2;     //记录
+}
+
+message SysMonInfo {
+    string host_id = 1;             //主机识别id
+    uint64 query_num = 2;           //查询次数
+}
+
+//链路类型信息
+message LinkIspInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型
+    repeated LinkIspInfo ev = 3;    //记录（新增、编辑、删除操作使用）
+}
+
+message LinkIspInfo {
+    uint64 id = 1;                  //记录序号
+    string name_cn = 2;             //链路中文名（用于其他关联表的界面显示）
+    string name_en = 3;             //链路标识（英文名）
+    int32 weight = 4;               //链路类型权重(范围：1-255）
+}
+
+//链路端口信息
+message LinkPortInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型
+    repeated LinkPortInfo ev = 3;   //记录（新增、编辑、删除操作使用）
+}
+
+message LinkPortInfo {
+    uint64 id = 1;                  //记录序号
+    uint64 isp_id = 2;              //链路类型序号（LinkIspInfo--id）
+    string card = 3;                //dns主机的网口
+    int32 weight = 4;               //链路端口权重(范围：1-255）
+    bool enable = 5;                //状态使能
+}
+
+//ip库信息
+message LinkIpInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型 
+    repeated LinkIpInfo ev = 3;     //记录（新增、编辑、删除操作使用）
+}
+
+message LinkIpInfo {
+    uint64 id = 1;                  //记录序号
+    uint64 isp_id = 2;              //链路类型序号（LinkIspInfo--id）
+    bool ip_type = 3;               //ip的类型（0：IPv4，1：IPv6）
+    string ip_beg = 4;              //起始ip/ip段
+    string ip_end = 5;              //结束ip（ip_beg为ip段时，ip_end为“-”）
+}
+
+//访问控制
+message ACLInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    OperType operate_type = 2;      //操作类型
+    repeated ACLInfo ev = 3;        //记录（新增、编辑、删除操作使用）
+}
+
+message ACLInfo {
+    uint64 id = 1;                  //记录序号
+    string ip = 2;                  //控制ip
+    int32 mask = 3;                 //ip的掩码位（类型为v4：24，32选择; 为v6：64,128选择）
+    bool ip_type = 4;               //ip的类型（0：IPv4，1：IPv6）
+    bool enable = 5;                //状态使能 （0：访问启用 1：访问禁止）
+    string reference = 6;           //备注
+}
+
+//正向域名状态数量
+message ForStatusNumInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    uint64 id = 2;                  //记录序号(ForwardInfo--id)
+    int32 normal = 3;               //正常数量
+    int32 abnormal = 4;             //异常数量（正在获取状态归为异常数量中）
+}
+
+//正向域名记录解析状态
+message ForStatusInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    uint64 for_id = 2;              //正向域名序号(ForwardInfo--id)
+    uint64 id = 3;                  //记录序号(DomainInfo--id)
+    int32 status = 4;               //解析状态(0：异常，1：正常, 2: 正在获取）
+}
+
+//反向域名记录解析状态
+message BackStatusInfos {
+    uint64 clust_id = 1;            //集群id，没有集群时，id为0
+    uint64 id = 2;                  //记录序号(BackwardInfo--id)
+    int32 status = 3;               //解析状态(0：异常，1：正常, 2: 正在获取）
+}

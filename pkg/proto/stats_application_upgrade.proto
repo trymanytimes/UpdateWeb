@@ -1,0 +1,70 @@
+﻿syntax = "proto3";
+
+package ateStatsApplicationUpgrade;
+
+// The greeting service definition.
+service AteStatsApplicationUpgrade {
+
+ //flow and trascations stas
+  rpc showDomainChangeStatData (ShowDomainChangeStatDataReq) returns (ShowDomainChangeStatDataRsp) {}//应用升级统计信息
+  rpc showPageDomainStatData (ShowPageDomainStatDataReq) returns (ShowPageDomainStatDataRsp) {}//单个域名统计信息
+  rpc showConcFlowInfoData (ShowConcFlowInfoDataReq) returns (ShowConcFlowInfoDataRsp) {}//会员域名的并发量和网络流量
+}
+
+//single domain information 
+
+message ShowDomainChangeStatDataReq{
+	string cluster_id = 1; //集群ID
+}
+
+
+message ShowDomainChangeStatDataRsp{
+	uint32 domain_change_count = 1; //应用升级业务总数
+	uint32 domain_chang_http_count = 2;// 域名升级HTTP总数占比
+	uint32 domain_chang_https_count = 3;// 域名升级HTTPS总数占比
+	uint64 current_visit_number = 4;//进入应用升级平台当前访问量
+	uint64 current_total_bytes = 5;//进入应用升级平台当前网络流量
+}
+
+message DomainPortData{
+    //会员域名
+    string member_domain = 1;
+    //会员端口
+   string member_port = 2;
+}
+//PageDomain info stats
+message ShowPageDomainStatDataReq{
+	string cluster_id = 1; //集群ID
+	//repeated string member_domain = 2; //会员域名
+	repeated DomainPortData member_host_port = 2; //会员端口
+}
+
+message SingleDomainStatData{
+     //升级域名
+    string member_domain = 1;
+    //在线连接数
+    uint32 online_connections_count = 2;
+    //当前http事务数
+    uint32 http_transcation_count = 3;
+    //当前网络流量（请求）
+    uint64 current_request_bytes = 4;
+    //当前网络流量（响应）
+    uint64 current_response_bytes = 5;
+    //端口
+    string member_port = 6;
+}
+
+
+message ShowPageDomainStatDataRsp{
+
+  repeated SingleDomainStatData stats_info = 1;
+}
+
+message ShowConcFlowInfoDataReq{
+	string member_domain = 1; //会员域名
+}
+
+message ShowConcFlowInfoDataRsp{
+	uint32 ralt_concurrency = 1;//并发量
+	uint32 ralt_network_flow = 2; //网络流量
+}
