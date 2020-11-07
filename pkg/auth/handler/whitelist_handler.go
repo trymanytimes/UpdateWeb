@@ -5,14 +5,14 @@ import (
 	"net"
 	"strings"
 
-	"github.com/linkingthing/ddi-controller/config"
+	"github.com/trymanytimes/UpdateWeb/config"
 
 	restdb "github.com/zdnscloud/gorest/db"
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/pkg/auth/resource"
-	"github.com/linkingthing/ddi-controller/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
 )
 
 var (

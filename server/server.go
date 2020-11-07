@@ -12,9 +12,9 @@ import (
 	"github.com/zdnscloud/gorest/adaptor"
 	"github.com/zdnscloud/gorest/resource/schema"
 
-	"github.com/linkingthing/ddi-controller/config"
-	"github.com/linkingthing/ddi-controller/pkg/auth/authentification"
-	"github.com/linkingthing/ddi-controller/pkg/util"
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/authentification"
+	"github.com/trymanytimes/UpdateWeb/pkg/util"
 )
 
 const (

@@ -7,8 +7,8 @@ import (
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/pkg/auth/resource"
-	"github.com/linkingthing/ddi-controller/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
 )
 
 var (

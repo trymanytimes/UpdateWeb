@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/linkingthing/ddi-controller/config"
+	"github.com/trymanytimes/UpdateWeb/config"
 	monitorpb "github.com/linkingthing/ddi-monitor/pkg/proto"
 	pghapb "github.com/linkingthing/pg-ha/pkg/proto"
 )

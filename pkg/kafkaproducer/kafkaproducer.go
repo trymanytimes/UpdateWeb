@@ -8,7 +8,7 @@ import (
 
 	dhcpconsumer "github.com/linkingthing/ddi-agent/pkg/dhcp/kafkaconsumer"
 	dnsconsumer "github.com/linkingthing/ddi-agent/pkg/dns/kafkaconsumer"
-	"github.com/linkingthing/ddi-controller/config"
+	"github.com/trymanytimes/UpdateWeb/config"
 )
 
 type KafkaProducer struct {

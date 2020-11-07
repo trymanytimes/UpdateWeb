@@ -5,9 +5,9 @@ import (
 	"github.com/zdnscloud/gorest"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/pkg/auth/authorization"
-	"github.com/linkingthing/ddi-controller/pkg/auth/handler"
-	"github.com/linkingthing/ddi-controller/pkg/auth/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/authorization"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/handler"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/resource"
 )
 
 var (

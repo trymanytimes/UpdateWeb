@@ -17,12 +17,12 @@ import (
 	"github.com/linkingthing/ddi-agent/pkg/dns/kafkaconsumer"
 	agentkafkaproducer "github.com/linkingthing/ddi-agent/pkg/kafkaproducer"
 	pb "github.com/linkingthing/ddi-agent/pkg/proto"
-	"github.com/linkingthing/ddi-controller/config"
-	"github.com/linkingthing/ddi-controller/pkg/auth/authentification"
-	"github.com/linkingthing/ddi-controller/pkg/db"
-	"github.com/linkingthing/ddi-controller/pkg/kafkaproducer"
-	"github.com/linkingthing/ddi-controller/pkg/log/resource"
-	metricresource "github.com/linkingthing/ddi-controller/pkg/metric/resource"
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/authentification"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/kafkaproducer"
+	"github.com/trymanytimes/UpdateWeb/pkg/log/resource"
+	metricresource "github.com/trymanytimes/UpdateWeb/pkg/metric/resource"
 	monitorconfig "github.com/linkingthing/ddi-monitor/config"
 )
 

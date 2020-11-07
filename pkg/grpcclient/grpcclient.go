@@ -3,19 +3,27 @@ package grpcclient
 import (
 	"google.golang.org/grpc"
 
-	pb "github.com/linkingthing/ddi-agent/pkg/proto"
+	pbMonitor "github.com/trymanytimes/UpdateWeb/pkg/proto/ateStatsHomePage"
+	pbCluster "github.com/trymanytimes/UpdateWeb/pkg/proto/ate_cluster"
+	pbWebsite "github.com/trymanytimes/UpdateWeb/pkg/proto/rcs"
 )
 
 type GrpcClient struct {
-	DHCPClient pb.DHCPManagerClient
+	ClusterClient pbCluster.ClusterManagerClient
+	WebsiteClient pbWebsite.RaltConfServClient
+	MonitorClient pbMonitor.AteStatsHomePageClient
 }
 
 var grpcClient *GrpcClient
 
-func NewDhcpClient(conn *grpc.ClientConn) {
-	grpcClient = &GrpcClient{DHCPClient: pb.NewDHCPManagerClient(conn)}
+func NewGrpcClient(conn *grpc.ClientConn) {
+	grpcClient = &GrpcClient{
+		ClusterClient: pbCluster.NewClusterManagerClient(conn),
+		WebsiteClient: pbWebsite.NewRaltConfServClient(conn),
+		MonitorClient: pbMonitor.NewAteStatsHomePageClient(conn),
+	}
 }
 
-func GetDHCPGrpcClient() pb.DHCPManagerClient {
-	return grpcClient.DHCPClient
+func GetGrpcClient() *GrpcClient {
+	return grpcClient
 }

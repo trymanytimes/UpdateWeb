@@ -6,7 +6,7 @@ import (
 	restdb "github.com/zdnscloud/gorest/db"
 	"github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/config"
+	"github.com/trymanytimes/UpdateWeb/config"
 )
 
 const ConnStr string = "user=%s password=%s host=%s port=%d database=%s sslmode=disable pool_max_conns=10"

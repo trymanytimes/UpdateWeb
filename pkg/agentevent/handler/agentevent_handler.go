@@ -15,9 +15,9 @@ import (
 
 	agentkafkaproducer "github.com/linkingthing/ddi-agent/pkg/kafkaproducer"
 	pb "github.com/linkingthing/ddi-agent/pkg/proto"
-	"github.com/linkingthing/ddi-controller/config"
-	"github.com/linkingthing/ddi-controller/pkg/agentevent/resource"
-	"github.com/linkingthing/ddi-controller/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/agentevent/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
 )
 
 var (

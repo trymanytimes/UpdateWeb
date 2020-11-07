@@ -6,8 +6,8 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/linkingthing/ddi-controller/config"
-	metricsrv "github.com/linkingthing/ddi-controller/pkg/metric/service"
+	"github.com/trymanytimes/UpdateWeb/config"
+	metricsrv "github.com/trymanytimes/UpdateWeb/pkg/metric/service"
 	monitorpb "github.com/linkingthing/ddi-monitor/pkg/proto"
 	pghapb "github.com/linkingthing/pg-ha/pkg/proto"
 )

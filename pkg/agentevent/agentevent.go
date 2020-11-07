@@ -2,8 +2,8 @@ package agentevent
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/linkingthing/ddi-controller/pkg/agentevent/handler"
-	"github.com/linkingthing/ddi-controller/pkg/agentevent/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/agentevent/handler"
+	"github.com/trymanytimes/UpdateWeb/pkg/agentevent/resource"
 	"github.com/zdnscloud/gorest"
 	restresource "github.com/zdnscloud/gorest/resource"
 )

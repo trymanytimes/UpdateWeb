@@ -8,14 +8,15 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	restdb "github.com/zdnscloud/gorest/db"
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/config"
-	"github.com/linkingthing/ddi-controller/pkg/db"
-	"github.com/linkingthing/ddi-controller/pkg/metric/resource"
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/metric/resource"
 )
 
 var (
@@ -27,10 +28,60 @@ var (
 	schema          = "http://"
 )
 
+const DefaultPeriodValue = "6"
+
 type NodeHandler struct {
 	prometheusAddr string
 	exportPort     int
 	httpClient     *http.Client
+}
+type TimePeriodParams struct {
+	Begin int64
+	End   int64
+	Step  int64
+}
+
+func getTimePeriodParamFromFilter(filters []restresource.Filter) *TimePeriodParams {
+	periodStr := getPeriodFromFilters(filters)
+	period, _ := strconv.Atoi(periodStr)
+
+	return genTimePeriodParams(period)
+}
+func getPeriodFromFilters(filters []restresource.Filter) string {
+	for _, filter := range filters {
+		if filter.Name == "period" && filter.Modifier == restresource.Eq {
+			for _, value := range filter.Values {
+				switch value {
+				case "6", "12", "24", "168", "720", "2160":
+					return value
+				}
+			}
+		}
+	}
+
+	return DefaultPeriodValue
+}
+
+func genTimePeriodParams(period int) *TimePeriodParams {
+	now := time.Now().Unix()
+	return &TimePeriodParams{
+		Begin: now - int64(period*3600),
+		End:   now,
+		Step:  int64(period * 12),
+	}
+}
+
+type PrometheusResponse struct {
+	Status string         `json:"status"`
+	Data   PrometheusData `json:"data"`
+}
+type PrometheusData struct {
+	Results []PrometheusDataResult `json:"result"`
+}
+
+type PrometheusDataResult struct {
+	MetricLabels map[string]string `json:"metric"`
+	Values       [][]interface{}   `json:"values"`
 }
 
 func NewNodeHandler(conf *config.DDIControllerConfig, cli *http.Client) *NodeHandler {
@@ -39,8 +90,42 @@ func NewNodeHandler(conf *config.DDIControllerConfig, cli *http.Client) *NodeHan
 		httpClient:     cli,
 		exportPort:     conf.Prometheus.ExportPort,
 	}
-	go h.monitor()
+	//go h.monitor()
 	return h
+}
+func getRatiosWithTimestamp(values [][]interface{}, period *TimePeriodParams) []resource.RatioWithTimestamp {
+	var ratioWithTimestamps []resource.RatioWithTimestamp
+	for i := period.Begin; i <= period.End; i += period.Step {
+		ratioWithTimestamps = append(ratioWithTimestamps, resource.RatioWithTimestamp{
+			Timestamp: restresource.ISOTime(time.Unix(i, 0)),
+			Ratio:     "0",
+		})
+	}
+
+	for _, vs := range values {
+		if t, s := getTimestampAndValue(vs); t != 0 {
+			if f, err := strconv.ParseFloat(s, 64); err == nil {
+				ratioWithTimestamps[(t-period.Begin)/period.Step].Ratio = fmt.Sprintf("%.4f", f)
+			}
+		}
+	}
+
+	return ratioWithTimestamps
+}
+func getTimestampAndValue(values []interface{}) (int64, string) {
+	var timestamp int64
+	var value string
+	for _, v := range values {
+		if i, ok := v.(float64); ok {
+			timestamp = int64(i)
+		}
+
+		if s, ok := v.(string); ok {
+			value = s
+		}
+	}
+
+	return timestamp, value
 }
 
 func (h *NodeHandler) List(ctx *restresource.Context) (interface{}, *resterror.APIError) {

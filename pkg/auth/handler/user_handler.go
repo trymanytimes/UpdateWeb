@@ -9,11 +9,10 @@ import (
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/pkg/auth/authorization"
-	"github.com/linkingthing/ddi-controller/pkg/auth/resource"
-	"github.com/linkingthing/ddi-controller/pkg/db"
-	ipamresource "github.com/linkingthing/ddi-controller/pkg/ipam/resource"
-	"github.com/linkingthing/ddi-controller/pkg/util"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/authorization"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/util"
 )
 
 var (
@@ -190,18 +189,7 @@ func reloadUserAuthority(user *resource.Ddiuser, tx restdb.Transaction) error {
 	views = recombineSlices(views, []string{}, false)
 	authorization.CreateViewAuthority(views, user.RoleAuthority)
 
-	var planList []*ipamresource.Plan
-	if err := tx.FillEx(&planList,
-		fmt.Sprintf(`select * from gr_plan where id in ('%s')`,
-			strings.Join(planIds, "','"))); err != nil {
-		return err
-	}
-
 	var plans []string
-	for _, plan := range planList {
-		plans = append(plans, plan.Prefix)
-	}
-	plans = recombineSlices(plans, []string{}, false)
 	authorization.CreateDhcpAuthority(plans, user.RoleAuthority)
 
 	return nil

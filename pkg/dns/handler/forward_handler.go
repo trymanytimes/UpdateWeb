@@ -10,9 +10,9 @@ import (
 
 	"github.com/linkingthing/ddi-agent/pkg/dns/kafkaconsumer"
 	pb "github.com/linkingthing/ddi-agent/pkg/proto"
-	"github.com/linkingthing/ddi-controller/pkg/db"
-	"github.com/linkingthing/ddi-controller/pkg/dns/resource"
-	"github.com/linkingthing/ddi-controller/pkg/util"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/dns/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/util"
 )
 
 var (

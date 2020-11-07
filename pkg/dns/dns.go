@@ -7,8 +7,8 @@ import (
 	"github.com/zdnscloud/gorest"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/pkg/dns/handler"
-	"github.com/linkingthing/ddi-controller/pkg/dns/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/dns/handler"
+	"github.com/trymanytimes/UpdateWeb/pkg/dns/resource"
 )
 
 var (

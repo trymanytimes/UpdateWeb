@@ -7,7 +7,7 @@ import (
 
 	"github.com/zdnscloud/cement/log"
 
-	"github.com/linkingthing/ddi-controller/pkg/util"
+	"github.com/trymanytimes/UpdateWeb/pkg/util"
 )
 
 func init() {

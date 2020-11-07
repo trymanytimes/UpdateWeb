@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/linkingthing/ddi-controller/pkg/kafkaproducer"
+	"github.com/trymanytimes/UpdateWeb/pkg/kafkaproducer"
 )
 
 func SendKafkaMessage(id, kafkaCmd string, m proto.Message) error {

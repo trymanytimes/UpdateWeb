@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"io/ioutil"
-	"strings"
 	"sync"
 	"time"
 
@@ -16,11 +15,10 @@ import (
 	pghapb "github.com/linkingthing/pg-ha/pkg/proto"
 	pgha "github.com/linkingthing/pg-ha/pkg/rpcserver"
 
-	"github.com/linkingthing/ddi-controller/config"
-	alarm "github.com/linkingthing/ddi-controller/pkg/alarm/resource"
-	"github.com/linkingthing/ddi-controller/pkg/db"
-	metrichandler "github.com/linkingthing/ddi-controller/pkg/metric/handler"
-	"github.com/linkingthing/ddi-controller/pkg/metric/resource"
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
+	metrichandler "github.com/trymanytimes/UpdateWeb/pkg/metric/handler"
+	"github.com/trymanytimes/UpdateWeb/pkg/metric/resource"
 )
 
 type NodeMonitorHandler struct {
@@ -202,7 +200,7 @@ func (handler *NodeMonitorHandler) MasterOper(masterIp string) error {
 }
 
 func (handler *NodeMonitorHandler) sendHAEventIfNeed(cmd pgha.PGHACmd, req pghapb.DDICtrlRequest) {
-	var thresholds []*alarm.Threshold
+	/*var thresholds []*alarm.Threshold
 	if err := restdb.WithTx(db.GetDB(), func(tx restdb.Transaction) error {
 		err := tx.Fill(map[string]interface{}{restdb.IDField: strings.ToLower(string(alarm.ThresholdNameHATrigger))}, &thresholds)
 		return err
@@ -217,5 +215,5 @@ func (handler *NodeMonitorHandler) sendHAEventIfNeed(cmd pgha.PGHACmd, req pghap
 
 	alarm.NewEvent().Name(thresholds[0].Name).Level(thresholds[0].Level).ThresholdType(thresholds[0].ThresholdType).Time(time.Now()).
 		SendMail(thresholds[0].SendMail).HaCmd(string(cmd)).MasterIp(req.GetMasterIp()).SlaveIp(req.GetSlaveIp()).Publish()
-
+	*/
 }

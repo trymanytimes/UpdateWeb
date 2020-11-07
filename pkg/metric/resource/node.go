@@ -26,3 +26,8 @@ type Node struct {
 	StartTime    time.Time            `json:"startTime"`
 	Vip          string               `json:"vip"`
 }
+
+type RatioWithTimestamp struct {
+	Timestamp resource.ISOTime `json:"timestamp"`
+	Ratio     string           `json:"ratio"`
+}

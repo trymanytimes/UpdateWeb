@@ -8,9 +8,9 @@ import (
 	"github.com/zdnscloud/gorest"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/config"
-	"github.com/linkingthing/ddi-controller/pkg/log/handler"
-	"github.com/linkingthing/ddi-controller/pkg/log/resource"
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/log/handler"
+	"github.com/trymanytimes/UpdateWeb/pkg/log/resource"
 )
 
 var (

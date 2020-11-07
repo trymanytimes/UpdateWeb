@@ -16,12 +16,12 @@ import (
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/config"
-	"github.com/linkingthing/ddi-controller/pkg/db"
-	"github.com/linkingthing/ddi-controller/pkg/log/resource"
-	metricHandler "github.com/linkingthing/ddi-controller/pkg/metric/handler"
-	metricRes "github.com/linkingthing/ddi-controller/pkg/metric/resource"
-	"github.com/linkingthing/ddi-controller/pkg/util"
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/log/resource"
+	metricHandler "github.com/trymanytimes/UpdateWeb/pkg/metric/handler"
+	metricRes "github.com/trymanytimes/UpdateWeb/pkg/metric/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/util"
 	monitorConf "github.com/linkingthing/ddi-monitor/config"
 )
 

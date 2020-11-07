@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/linkingthing/ddi-controller/pkg/auth/authentification"
+	"github.com/trymanytimes/UpdateWeb/pkg/auth/authentification"
 
 	"github.com/zdnscloud/cement/log"
 	"github.com/zdnscloud/gorest"
@@ -15,11 +15,11 @@ import (
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/linkingthing/ddi-controller/config"
-	authhandler "github.com/linkingthing/ddi-controller/pkg/auth/handler"
-	"github.com/linkingthing/ddi-controller/pkg/db"
-	"github.com/linkingthing/ddi-controller/pkg/log/resource"
-	"github.com/linkingthing/ddi-controller/pkg/util"
+	"github.com/trymanytimes/UpdateWeb/config"
+	authhandler "github.com/trymanytimes/UpdateWeb/pkg/auth/handler"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
+	"github.com/trymanytimes/UpdateWeb/pkg/log/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/util"
 )
 
 const (
