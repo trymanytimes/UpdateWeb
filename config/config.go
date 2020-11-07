@@ -8,13 +8,11 @@ type DDIControllerConfig struct {
 	Path          string            `yaml:"-"`
 	DB            DBConf            `yaml:"db"`
 	Server        ServerConf        `yaml:"server"`
-	Kafka         KafkaConf         `yaml:"kafka"`
-	DDIAgent      DDIAgentConf      `yaml:"ddi_agent"`
 	Prometheus    PrometheusConf    `yaml:"prometheus"`
 	Elasticsearch ElasticsearchConf `yaml:"elasticsearch"`
 	MonitorNode   MonitorNodeConf   `yaml:"monitor_node"`
 	AuditLog      AuditLogConf      `yaml:"audit_log"`
-	Alarm         AlarmConf         `yaml:"alarm"`
+	APIServer     APIGrpcConf       `yaml:"api_server"`
 }
 
 type DBConf struct {
@@ -36,14 +34,8 @@ type ServerConf struct {
 	RoleConf    string `yaml:"role_conf"`
 }
 
-type DDIAgentConf struct {
+type APIGrpcConf struct {
 	GrpcAddr string `yaml:"grpc_addr"`
-}
-
-type KafkaConf struct {
-	Addr              []string
-	GroupIdAgentEvent string `yaml:"group_id_agentevent"`
-	GroupIdUploadLog  string `yaml:"group_id_uploadlog"`
 }
 
 type PrometheusConf struct {
@@ -57,10 +49,6 @@ type MonitorNodeConf struct {
 type ElasticsearchConf struct {
 	Addr  string `yaml:"addr"`
 	Index string `yaml:"index"`
-}
-
-type AlarmConf struct {
-	ValidPeriod uint32 `yaml:"valid_period"`
 }
 
 type AuditLogConf struct {

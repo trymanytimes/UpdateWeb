@@ -9,6 +9,7 @@ import (
 
 	"github.com/trymanytimes/UpdateWeb/config"
 	"github.com/trymanytimes/UpdateWeb/pkg/auth"
+	"github.com/trymanytimes/UpdateWeb/pkg/db"
 	"github.com/trymanytimes/UpdateWeb/pkg/grpcclient"
 	auditlog "github.com/trymanytimes/UpdateWeb/pkg/log"
 	"github.com/trymanytimes/UpdateWeb/pkg/metric"
@@ -28,8 +29,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("load config file failed: %s", err.Error())
 	}
-
-	conn, err := grpc.Dial(conf.DDIAgent.GrpcAddr, grpc.WithInsecure())
+	db.RegisterResources(auditlog.PersistentResources()...)
+	db.RegisterResources(auth.PersistentResources()...)
+	if err := db.Init(conf); err != nil {
+		log.Fatalf("init db failed: %s", err.Error())
+	}
+	conn, err := grpc.Dial(conf.APIServer.GrpcAddr, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("dail grpc failed: %s", err.Error())
 	}

@@ -15,7 +15,6 @@ import (
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
-	"github.com/trymanytimes/UpdateWeb/config"
 	authhandler "github.com/trymanytimes/UpdateWeb/pkg/auth/handler"
 	"github.com/trymanytimes/UpdateWeb/pkg/db"
 	"github.com/trymanytimes/UpdateWeb/pkg/log/resource"
@@ -34,9 +33,6 @@ type AuditLogHandler struct {
 
 func NewAuditLogHandler() *AuditLogHandler {
 	defaultAuditLogValidPeriod := DefaultAuditLogValidPeriod
-	if conf := config.GetConfig(); conf != nil && conf.AuditLog.ValidPeriod != 0 {
-		defaultAuditLogValidPeriod = int(conf.Alarm.ValidPeriod)
-	}
 
 	h := &AuditLogHandler{
 		defaultAuditLogValidPeriod: defaultAuditLogValidPeriod,
