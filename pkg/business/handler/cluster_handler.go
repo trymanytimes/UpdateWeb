@@ -9,7 +9,7 @@ import (
 
 	"github.com/trymanytimes/UpdateWeb/pkg/grpcclient"
 	pbCluster "github.com/trymanytimes/UpdateWeb/pkg/proto/ate_cluster"
-	"github.com/trymanytimes/UpdateWeb/pkg/web/resource"
+	"github.com/trymanytimes/UpdateWeb/pkg/business/resource"
 )
 
 var (
@@ -32,27 +32,36 @@ type ClusterHandler struct{}
 
 func NewClusterHandler() (*ClusterHandler, error) {
 	cli := grpcclient.GetGrpcClient()
-	var clusterInfo pbCluster.ClusterPublicInfoReq
-	clusterInfo.ClusterId = DefaultClusterID
-	clusterInfo.OperType = OperTypeCreate
-	//Balance info
-	clusterInfo.BalanceInfo = &pbCluster.ClusterBalanceInfo{}
-	clusterInfo.BalanceInfo.ClusterName = DefaultClusterName
-	clusterInfo.BalanceInfo.ClusterType = ClusterType
-	clusterInfo.BalanceInfo.NodeHost = append(clusterInfo.BalanceInfo.NodeHost, &pbCluster.NodeHost{
-		HostId: "421f87ed-315d-ea59-59f9-4269d9f0768e",
-		NodeId: "421f87ed-315d-ea59-59f9-4269d9f0768e",
-	})
-	clusterInfo.BalanceInfo.BalanceType = BalanceTypeHash
-	clusterInfo.BalanceInfo.Ipv6Vip = append(clusterInfo.BalanceInfo.Ipv6Vip, &pbCluster.VipInterval{BeginVip: "2400:fe00:1f00:0:efff:fffd:0:5", EndVip: "2400:fe00:1f00:0:efff:fffd:0:a"})
-	//Application info
-	clusterInfo.AppInfo = &pbCluster.ClusterAppInfo{RaltRefererDefault: SwitchUp, Redirect: On}
-	//cluster info
-	clusterInfo.LogInfo = &pbCluster.ClusterLogInfo{IsOn: SwitchUp, NodeLogSize: 10240, RemoteLogIp: Localhost, RemoteLogPort: LogPort}
-	//cache info
-	clusterInfo.CacheInfo = &pbCluster.ClusterCacheInfo{IsCacheOpen: SwitchUp, CacheDbSize: 4096}
-	if _, err := cli.ClusterClient.SetCluster(context.Background(), &clusterInfo); err != nil {
+	//query wether exists a cluster
+	clusterIDReq := pbCluster.ClusterIDReq{ClusterId: DefaultClusterID}
+	defaultCluster, err := cli.ClusterClient.QryOneCluster(context.Background(), &clusterIDReq)
+	if err != nil {
 		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+	}
+	if defaultCluster.SocsInfo.ClusterName == "" {
+		//create a new cluster
+		var clusterInfo pbCluster.ClusterPublicInfoReq
+		clusterInfo.ClusterId = DefaultClusterID
+		clusterInfo.OperType = OperTypeCreate
+		//Balance info
+		clusterInfo.BalanceInfo = &pbCluster.ClusterBalanceInfo{}
+		clusterInfo.BalanceInfo.ClusterName = DefaultClusterName
+		clusterInfo.BalanceInfo.ClusterType = ClusterType
+		clusterInfo.BalanceInfo.NodeHost = append(clusterInfo.BalanceInfo.NodeHost, &pbCluster.NodeHost{
+			HostId: "421f87ed-315d-ea59-59f9-4269d9f0768e",
+			NodeId: "421f87ed-315d-ea59-59f9-4269d9f0768e",
+		})
+		clusterInfo.BalanceInfo.BalanceType = BalanceTypeHash
+		clusterInfo.BalanceInfo.Ipv6Vip = append(clusterInfo.BalanceInfo.Ipv6Vip, &pbCluster.VipInterval{BeginVip: "2400:fe00:1f00:0:efff:fffd:0:5", EndVip: "2400:fe00:1f00:0:efff:fffd:0:a"})
+		//Application info
+		clusterInfo.AppInfo = &pbCluster.ClusterAppInfo{RaltRefererDefault: SwitchUp, Redirect: On}
+		//cluster info
+		clusterInfo.LogInfo = &pbCluster.ClusterLogInfo{IsOn: SwitchUp, NodeLogSize: 10240, RemoteLogIp: Localhost, RemoteLogPort: LogPort}
+		//cache info
+		clusterInfo.CacheInfo = &pbCluster.ClusterCacheInfo{IsCacheOpen: SwitchUp, CacheDbSize: 4096}
+		if _, err := cli.ClusterClient.SetCluster(context.Background(), &clusterInfo); err != nil {
+			log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+		}
 	}
 	return &ClusterHandler{}, nil
 }
@@ -86,6 +95,12 @@ func (h *ClusterHandler) Create(ctx *restresource.Context) (restresource.Resourc
 	if _, err := cli.ClusterClient.SetCluster(context.Background(), &clusterInfo); err != nil {
 		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
 	}
+	cluster.Balance.Name = clusterInfo.BalanceInfo.ClusterName
+	cluster.Balance.ClusterType = clusterInfo.BalanceInfo.ClusterType
+	for _, v := range clusterInfo.BalanceInfo.Ipv6Vip {
+		cluster.Balance.Ipv6Vips = append(cluster.Balance.Ipv6Vips, &resource.VipInterval{BeginVip: v.BeginVip, EndVip: v.EndVip, Length: v.Length})
+	}
+
 	return cluster, nil
 }
 
@@ -106,7 +121,24 @@ func (h *ClusterHandler) Update(ctx *restresource.Context) (restresource.Resourc
 }
 
 func (h *ClusterHandler) Get(ctx *restresource.Context) (restresource.Resource, *resterror.APIError) {
-	return &resource.Cluster{}, nil
+	cli := grpcclient.GetGrpcClient()
+	//query wether exists a cluster
+	clusterIDReq := pbCluster.ClusterIDReq{ClusterId: DefaultClusterID}
+	defaultCluster, err := cli.ClusterClient.QryOneCluster(context.Background(), &clusterIDReq)
+	if err != nil {
+		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+	}
+	c := &resource.Cluster{Name: defaultCluster.SocsInfo.ClusterName}
+	c.SetID(DefaultClusterID)
+	c.Balance.Name = defaultCluster.GetSocsInfo().ClusterName
+	c.Balance.ClusterType = defaultCluster.SocsInfo.ClusterType
+	for _, v := range defaultCluster.SocsInfo.NodeHost {
+		c.Balance.NodeHosts = append(c.Balance.NodeHosts, &resource.NodeHost{HostID: v.HostId, NodeID: v.NodeId})
+	}
+	for _, v := range defaultCluster.SocsInfo.Ipv6Vip {
+		c.Balance.Ipv6Vips = append(c.Balance.Ipv6Vips, &resource.VipInterval{BeginVip: v.BeginVip, EndVip: v.EndVip, Length: v.Length})
+	}
+	return c, nil
 }
 
 func (h *ClusterHandler) List(ctx *restresource.Context) (interface{}, *resterror.APIError) {
