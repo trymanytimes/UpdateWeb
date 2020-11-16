@@ -13,6 +13,7 @@ type DDIControllerConfig struct {
 	MonitorNode   MonitorNodeConf   `yaml:"monitor_node"`
 	AuditLog      AuditLogConf      `yaml:"audit_log"`
 	APIServer     APIGrpcConf       `yaml:"api_server"`
+	VIP           VIPConf           `yaml:"vip"`
 }
 
 type DBConf struct {
@@ -53,6 +54,12 @@ type ElasticsearchConf struct {
 
 type AuditLogConf struct {
 	ValidPeriod uint32 `yaml:"valid_period"`
+}
+
+type VIPConf struct {
+	BeginVIP string `yaml:"begin_vip"`
+	EndVIP   string `yaml:"end_vip"`
+	Length   int32  `yaml:"length"`
 }
 
 var gConf *DDIControllerConfig

@@ -18,8 +18,8 @@ var (
 
 type WebGroupHandler struct{}
 
-func NewWebGroupHandler() (*WebGroupHandler, error) {
-	return &WebGroupHandler{}, nil
+func NewWebGroupHandler() *WebGroupHandler {
+	return &WebGroupHandler{}
 }
 
 func (h *WebGroupHandler) Create(ctx *restresource.Context) (restresource.Resource, *resterror.APIError) {
@@ -33,6 +33,7 @@ func (h *WebGroupHandler) Create(ctx *restresource.Context) (restresource.Resour
 		ItransformMod:      TransformModType64,
 		StrclusterId:       DefaultClusterID,
 	}
+	webGroupIDReq.FuncSwitcher = &pbWeb.FuncSwitcherInfo{}
 	webGroupIDReq.FuncSwitcher.BreplaceHref = webGroup.UpdateSwithcher.IsReplaceHrefOn
 	webGroupIDReq.FuncSwitcher.BhttpsToHttp = webGroup.UpdateSwithcher.IsHttpsToHttpOn
 	webGroupIDReq.FuncSwitcher.Binet6Cache = webGroup.UpdateSwithcher.IsCacheOn
@@ -76,6 +77,7 @@ func (h *WebGroupHandler) Update(ctx *restresource.Context) (restresource.Resour
 		ItransformMod:      TransformModType64,
 		StrclusterId:       DefaultClusterID,
 	}
+	webGroupIDReq.FuncSwitcher = &pbWeb.FuncSwitcherInfo{}
 	webGroupIDReq.FuncSwitcher.BreplaceHref = webGroup.UpdateSwithcher.IsReplaceHrefOn
 	webGroupIDReq.FuncSwitcher.BhttpsToHttp = webGroup.UpdateSwithcher.IsHttpsToHttpOn
 	webGroupIDReq.FuncSwitcher.Binet6Cache = webGroup.UpdateSwithcher.IsCacheOn
@@ -112,6 +114,7 @@ func (h *WebGroupHandler) Get(ctx *restresource.Context) (restresource.Resource,
 		ClusterID:    defaultWebGroup.GroupList[0].StrclusterId,
 	}
 	c.SetID(defaultWebGroup.GroupList[0].StrgroupId)
+	c.UpdateSwithcher = &resource.FuncSwitcherInfo{}
 	c.UpdateSwithcher.IsCacheOn = defaultWebGroup.GroupList[0].FuncSwitcher.Binet6Cache
 	c.UpdateSwithcher.IsHttpsToHttpOn = defaultWebGroup.GroupList[0].FuncSwitcher.BhttpsToHttp
 	c.UpdateSwithcher.IsReplaceHrefOn = defaultWebGroup.GroupList[0].FuncSwitcher.BreplaceHref
@@ -145,10 +148,11 @@ func (h *WebGroupHandler) List(ctx *restresource.Context) (interface{}, *resterr
 			TransformMod: v.ItransformMod,
 			ClusterID:    v.StrclusterId,
 		}
-		c.SetID(defaultWebGroups.GroupList[0].StrgroupId)
-		c.UpdateSwithcher.IsCacheOn = defaultWebGroups.GroupList[0].FuncSwitcher.Binet6Cache
-		c.UpdateSwithcher.IsHttpsToHttpOn = defaultWebGroups.GroupList[0].FuncSwitcher.BhttpsToHttp
-		c.UpdateSwithcher.IsReplaceHrefOn = defaultWebGroups.GroupList[0].FuncSwitcher.BreplaceHref
+		c.SetID(v.StrgroupId)
+		c.UpdateSwithcher = &resource.FuncSwitcherInfo{}
+		c.UpdateSwithcher.IsCacheOn = v.FuncSwitcher.Binet6Cache
+		c.UpdateSwithcher.IsHttpsToHttpOn = v.FuncSwitcher.BhttpsToHttp
+		c.UpdateSwithcher.IsReplaceHrefOn = v.FuncSwitcher.BreplaceHref
 		for _, rule := range v.Rule {
 			c.Rules = append(c.Rules, &resource.RuleInfo{
 				ID:            rule.StrruleId,

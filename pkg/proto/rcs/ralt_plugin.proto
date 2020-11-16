@@ -16,6 +16,7 @@
 
 syntax = "proto3";
 //import "util.proto";
+option go_package = "./;rcs";
 
 package rcs;
 
@@ -32,6 +33,7 @@ service RaltConfServ
   rpc getRaltCertPriKey (GetCertPriKeyReq) returns (GetCertPriKeyRsp) {}
   rpc suspendWebsite (SuspendWebsiteReq) returns (OperResult) {}
   rpc myTest (MyTestReq) returns (OperResult) {}   //仅供调试用
+  rpc getRaltGroupWebsite (GetRaltGroupWebsiteReq) returns (GetRaltGroupWebsiteRsp) {} //获取域名下所以网站
 }
 message OperResult {
     int32 ret_code = 1; //操作结果, 0成功, 错误码:100~199属于业务错误, 200~299属于集群错误, 300~399属于日志,统计 错误.
@@ -214,3 +216,12 @@ message MyTestReq //仅供调试用
   string strmytest = 1;
 }
 
+message GetRaltGroupWebsiteReq
+{
+  string strgroup_id = 1;
+}
+
+message GetRaltGroupWebsiteRsp
+{
+  repeated WebsiteReqInfo website = 1;
+}

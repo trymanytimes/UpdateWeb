@@ -17,8 +17,8 @@ import (
 
 type WebsiteHandler struct{}
 
-func NewWebsiteHandler() (*WebsiteHandler, error) {
-	return &WebsiteHandler{}, nil
+func NewWebsiteHandler() *WebsiteHandler {
+	return &WebsiteHandler{}
 }
 
 func (h *WebsiteHandler) Create(ctx *restresource.Context) (restresource.Resource, *resterror.APIError) {
@@ -118,5 +118,31 @@ func (h *WebsiteHandler) Get(ctx *restresource.Context) (restresource.Resource, 
 
 func (h *WebsiteHandler) List(ctx *restresource.Context) (interface{}, *resterror.APIError) {
 	var websites []*resource.Website
+	req := pbWeb.GetRaltGroupWebsiteReq{StrgroupId: ctx.Resource.GetParent().GetID()}
+	cli := grpcclient.GetGrpcClient()
+	rsp, err := cli.WebsiteClient.GetRaltGroupWebsite(context.Background(), &req)
+	if err != nil {
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec GetRaltGroupWebsite failed: %s", err.Error()))
+	}
+	for _, v := range rsp.Website {
+		var protocolPorts []*resource.ProtocolPort
+		for _, p := range v.ProtocolMap {
+			protocolPorts = append(protocolPorts, &resource.ProtocolPort{
+				SourceProtocol: p.StrsrcProtocol,
+				SourcePort:     p.IsrcPort,
+				DestProtocol:   p.StrdstProtocol,
+				DestPort:       p.IdstPort,
+			})
+		}
+		web := &resource.Website{
+			GroupID:       req.StrgroupId,
+			SourceDomain:  v.StrsrcDomain,
+			DestDomain:    v.StrdstDomain,
+			VirtualIP:     v.StrsrcIpAddr,
+			ProtocolPorts: protocolPorts,
+		}
+		web.SetID(v.StrdomainId)
+		websites = append(websites, web)
+	}
 	return websites, nil
 }

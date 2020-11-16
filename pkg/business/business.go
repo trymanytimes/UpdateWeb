@@ -1,4 +1,4 @@
-package web
+package business
 
 import (
 	"fmt"
@@ -27,6 +27,8 @@ func RegisterHandler(apiServer *gorest.Server, router gin.IRoutes) error {
 	apiServer.Schemas.MustImport(&Version, resource.Cluster{}, clusterHandler)
 	apiServer.Schemas.MustImport(&Version, resource.HomePage{}, handler.NewHomePageHandler())
 	apiServer.Schemas.MustImport(&Version, resource.Host{}, handler.NewHostHandler())
+	apiServer.Schemas.MustImport(&Version, resource.WebGroup{}, handler.NewWebGroupHandler())
+	apiServer.Schemas.MustImport(&Version, resource.Website{}, handler.NewWebsiteHandler())
 	return nil
 }
 

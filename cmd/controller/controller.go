@@ -9,11 +9,11 @@ import (
 
 	"github.com/trymanytimes/UpdateWeb/config"
 	"github.com/trymanytimes/UpdateWeb/pkg/auth"
+	"github.com/trymanytimes/UpdateWeb/pkg/business"
 	"github.com/trymanytimes/UpdateWeb/pkg/db"
 	"github.com/trymanytimes/UpdateWeb/pkg/grpcclient"
 	auditlog "github.com/trymanytimes/UpdateWeb/pkg/log"
 	"github.com/trymanytimes/UpdateWeb/pkg/metric"
-	"github.com/trymanytimes/UpdateWeb/pkg/business"
 	restserver "github.com/trymanytimes/UpdateWeb/server"
 )
 
@@ -55,7 +55,7 @@ func main() {
 		log.Fatalf("register auth failed: %s", err.Error())
 	}
 	server.RegisterHandler(restserver.HandlerRegister(auditlog.RegisterHandler))
-	server.RegisterHandler(restserver.HandlerRegister(web.RegisterHandler))
+	server.RegisterHandler(restserver.HandlerRegister(business.RegisterHandler))
 
 	if err := server.Run(conf); err != nil {
 		log.Fatalf("server run failed: %s", err.Error())

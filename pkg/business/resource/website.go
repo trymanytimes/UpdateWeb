@@ -19,3 +19,7 @@ type ProtocolPort struct {
 	DestProtocol   string `json:"destProtocol" rest:"required=true,minlen=1,maxlen=30"`
 	DestPort       int32  `json:"destPort" rest:"required=true,min=1,max=65536"`
 }
+
+func (w Website) GetParents() []resource.ResourceKind {
+	return []resource.ResourceKind{WebGroup{}}
+}

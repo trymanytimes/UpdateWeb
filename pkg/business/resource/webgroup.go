@@ -22,5 +22,5 @@ type RuleInfo struct {
 	ID            string `json:"id" rest:"required=true"`
 	RuleType      int32  `json:"ruleType" rest:"required=true"`
 	SearchString  string `json:"searchString" rest:"required=true"`
-	ReplaceString string `json:"ReplaceString" rest:"required=true"`
+	ReplaceString string `json:"replaceString" rest:"required=true"`
 }

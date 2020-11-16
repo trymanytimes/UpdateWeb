@@ -7,9 +7,10 @@ import (
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
+	"github.com/trymanytimes/UpdateWeb/config"
+	"github.com/trymanytimes/UpdateWeb/pkg/business/resource"
 	"github.com/trymanytimes/UpdateWeb/pkg/grpcclient"
 	pbCluster "github.com/trymanytimes/UpdateWeb/pkg/proto/ate_cluster"
-	"github.com/trymanytimes/UpdateWeb/pkg/business/resource"
 )
 
 var (
@@ -47,12 +48,24 @@ func NewClusterHandler() (*ClusterHandler, error) {
 		clusterInfo.BalanceInfo = &pbCluster.ClusterBalanceInfo{}
 		clusterInfo.BalanceInfo.ClusterName = DefaultClusterName
 		clusterInfo.BalanceInfo.ClusterType = ClusterType
-		clusterInfo.BalanceInfo.NodeHost = append(clusterInfo.BalanceInfo.NodeHost, &pbCluster.NodeHost{
-			HostId: "421f87ed-315d-ea59-59f9-4269d9f0768e",
-			NodeId: "421f87ed-315d-ea59-59f9-4269d9f0768e",
-		})
+		//get availavle device
+		devRsp, err := cli.ClusterClient.QryFreeDevice(context.Background(), &pbCluster.QryFreeDeviceReq{})
+		if err != nil {
+			log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+		}
+		for _, v := range devRsp.HostId {
+			clusterInfo.BalanceInfo.NodeHost = append(clusterInfo.BalanceInfo.NodeHost, &pbCluster.NodeHost{
+				HostId: v,
+				NodeId: v,
+			})
+		}
+
 		clusterInfo.BalanceInfo.BalanceType = BalanceTypeHash
-		clusterInfo.BalanceInfo.Ipv6Vip = append(clusterInfo.BalanceInfo.Ipv6Vip, &pbCluster.VipInterval{BeginVip: "2400:fe00:1f00:0:efff:fffd:0:5", EndVip: "2400:fe00:1f00:0:efff:fffd:0:a"})
+		clusterInfo.BalanceInfo.Ipv6Vip = append(clusterInfo.BalanceInfo.Ipv6Vip, &pbCluster.VipInterval{
+			BeginVip: config.GetConfig().VIP.BeginVIP,
+			EndVip:   config.GetConfig().VIP.EndVIP,
+			Length:   config.GetConfig().VIP.Length,
+		})
 		//Application info
 		clusterInfo.AppInfo = &pbCluster.ClusterAppInfo{RaltRefererDefault: SwitchUp, Redirect: On}
 		//cluster info

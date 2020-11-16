@@ -1,5 +1,6 @@
 syntax = "proto3";
 package ate_cluster;
+option go_package ="./;ate_cluster";
 
 //import "util.proto";
 
@@ -17,6 +18,7 @@ service ClusterManager{
     rpc qryServiceList(HostIDReq) returns (ServiceListRsp) {} //查询一个设备上所有的已经安装的服务.
     rpc qryFilterTypes(ClusterIDReq) returns (RaltFilterTypeRsp) {} //查询集群应用升级模块过滤类型
     rpc setFilterTypes(RaltFilterTypeReq) returns (OperResult) {} //设置应用升级模块过滤类型.
+    rpc qryFreeDevice(QryFreeDeviceReq) returns (QryFreeDeviceRsp) {} //查询可用的设备.    
 }
 
 message OperResult {
@@ -221,4 +223,11 @@ message RaltFilterTypeReq{
     string cluster_id = 1; //集群编号
     int32 oper_type = 2; //操作类型:增删改三种操作. 1表示增加, 2表示删除, 3表示修改.
     FilterType filter_type = 3;//报文头的Content-Type的过滤类型
+}
+
+message QryFreeDeviceReq{
+}
+
+message QryFreeDeviceRsp{
+    repeated string host_id = 1; 
 }
