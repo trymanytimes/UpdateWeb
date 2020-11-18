@@ -1,11 +1,13 @@
 package resource
 
+import "github.com/zdnscloud/gorest/resource"
+
 type Balance struct {
-	//resource.ResourceBase `json:",inline"`
-	Name        string         `json:"name" rest:"required=true,minLen=1,maxLen=20" db:"uk"`
-	ClusterType string         `json:"clusterType"`
-	NodeHosts   []*NodeHost    `json:"nodeHosts"`
-	Ipv6Vips    []*VipInterval `json:"ipv6Vips" rest:"required=true"`
+	resource.ResourceBase `json:",inline"`
+	Name                  string         `json:"name" rest:"required=true,minLen=1,maxLen=20" db:"uk"`
+	ClusterType           string         `json:"clusterType"`
+	NodeHosts             []*NodeHost    `json:"nodeHosts"`
+	Ipv6Vips              []*VipInterval `json:"ipv6Vips" rest:"required=true"`
 }
 
 type NodeHost struct {
@@ -13,8 +15,6 @@ type NodeHost struct {
 	NodeID string
 }
 
-type VipInterval struct {
-	BeginVip string
-	EndVip   string
-	Length   int32
+func (b Balance) GetParents() []resource.ResourceKind {
+	return []resource.ResourceKind{Cluster{}}
 }

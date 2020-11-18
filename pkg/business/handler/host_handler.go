@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/zdnscloud/cement/log"
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
@@ -26,7 +26,7 @@ func (h *HostHandler) Get(ctx *restresource.Context) (restresource.Resource, *re
 	req := pbHost.ShowHomePageFlowDataReq{DeviceId: device.GetID()}
 	resp, err := cli.MonitorClient.ShowHomePageFlowData(context.Background(), &req)
 	if err != nil {
-		log.Errorf("grpc service exec ShowHomePageFlowData failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec ShowHomePageFlowData failed: %s", err.Error()))
 	}
 	device.V4UpFlow = resp.GetUpDowmFlow()[len(resp.UpDowmFlow)-1].CurrentDeviceV4UpBytes
 	device.V4DownFlow = resp.GetUpDowmFlow()[len(resp.UpDowmFlow)-1].CurrentDeviceV4DownBytes
@@ -41,14 +41,14 @@ func (h *HostHandler) List(ctx *restresource.Context) (interface{}, *resterror.A
 	clusterIDReq := pbCluster.ClusterIDReq{ClusterId: DefaultClusterID}
 	defaultCluster, err := cli.ClusterClient.QryOneCluster(context.Background(), &clusterIDReq)
 	if err != nil {
-		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec SetCluster failed: %s", err.Error()))
 	}
 	var devices []*resource.Host
 	for _, v := range defaultCluster.SocsInfo.GetNodeHost() {
 		req := pbHost.ShowHomePageFlowDataReq{DeviceId: v.GetHostId()}
 		resp, err := cli.MonitorClient.ShowHomePageFlowData(context.Background(), &req)
 		if err != nil {
-			log.Errorf("grpc service exec ShowHomePageFlowData failed: %s", err.Error())
+			return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec ShowHomePageFlowData failed: %s", err.Error()))
 		}
 		var device resource.Host
 		device.V4UpFlow = resp.GetUpDowmFlow()[len(resp.UpDowmFlow)-1].CurrentDeviceV4UpBytes

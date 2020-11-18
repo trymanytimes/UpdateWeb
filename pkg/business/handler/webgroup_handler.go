@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/zdnscloud/cement/log"
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
@@ -46,7 +46,7 @@ func (h *WebGroupHandler) Create(ctx *restresource.Context) (restresource.Resour
 		})
 	}
 	if _, err := cli.WebsiteClient.OptRaltGroup(context.Background(), webGroupIDReq); err != nil {
-		log.Errorf("grpc service exec OptRaltGroup failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec OptRaltGroup failed: %s", err.Error()))
 	}
 
 	return webGroup, nil
@@ -61,7 +61,7 @@ func (h *WebGroupHandler) Delete(ctx *restresource.Context) *resterror.APIError 
 		StrclusterId: DefaultClusterID,
 	}
 	if _, err := cli.WebsiteClient.OptRaltGroup(context.Background(), webGroupIDReq); err != nil {
-		log.Errorf("grpc service exec OptRaltGroup failed: %s", err.Error())
+		return resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec OptRaltGroup failed: %s", err.Error()))
 	}
 	return nil
 }
@@ -90,7 +90,7 @@ func (h *WebGroupHandler) Update(ctx *restresource.Context) (restresource.Resour
 		})
 	}
 	if _, err := cli.WebsiteClient.OptRaltGroup(context.Background(), webGroupIDReq); err != nil {
-		log.Errorf("grpc service exec OptRaltGroup failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec OptRaltGroup failed: %s", err.Error()))
 	}
 	return webGroup, nil
 }
@@ -102,10 +102,10 @@ func (h *WebGroupHandler) Get(ctx *restresource.Context) (restresource.Resource,
 	WebGroupIDReq := pbWeb.GetRaltGroupReq{StrgroupId: webGroup.GetID()}
 	defaultWebGroup, err := cli.WebsiteClient.GetRaltGroup(context.Background(), &WebGroupIDReq)
 	if err != nil {
-		log.Errorf("grpc service exec GetRaltGroup failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec GetRaltGroup failed: %s", err.Error()))
 	}
 	if len(defaultWebGroup.GroupList) == 0 {
-		log.Errorf("grpc service exec GetRaltGroup failed: group for id %s is not exists", webGroup.GetID())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec GetRaltGroup failed: group for id %s is not exists", webGroup.GetID()))
 	}
 	c := &resource.WebGroup{
 		Name:         defaultWebGroup.GroupList[0].StrgroupName,
@@ -136,7 +136,7 @@ func (h *WebGroupHandler) List(ctx *restresource.Context) (interface{}, *resterr
 	//query wether exists a WebGroup
 	defaultWebGroups, err := cli.WebsiteClient.GetRaltGroup(context.Background(), &pbWeb.GetRaltGroupReq{})
 	if err != nil {
-		log.Errorf("grpc service exec GetRaltGroup failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec GetRaltGroup failed: %s", err.Error()))
 	}
 	if len(defaultWebGroups.GroupList) == 0 {
 		return webGroups, nil

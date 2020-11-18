@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/zdnscloud/cement/log"
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
@@ -29,7 +28,7 @@ func (h *WebsiteHandler) Create(ctx *restresource.Context) (restresource.Resourc
 	return website, nil
 }
 
-func (h *WebsiteHandler) OptRaltWebsite(website *resource.Website, operType int32) *resterror.APIError {
+func (h *WebsiteHandler) OptRaltWebsite(website *resource.Website, operType int32) error {
 	cli := grpcclient.GetGrpcClient()
 	websiteReq := &pbWeb.OptRaltWebsiteReq{Iopt: operType}
 	addrSrcDomain, err := net.ResolveIPAddr("ip", website.SourceDomain)
@@ -57,8 +56,7 @@ func (h *WebsiteHandler) OptRaltWebsite(website *resource.Website, operType int3
 	}
 	websiteReq.Website = append(websiteReq.Website, web)
 	if _, err := cli.WebsiteClient.OptRaltWebsite(context.Background(), websiteReq); err != nil {
-		log.Errorf("", err.Error())
-		return resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec OptRaltWebsite failed: %s", err.Error()))
+		return fmt.Errorf("grpc service exec OptRaltWebsite failed: %s", err.Error())
 	}
 	return nil
 }

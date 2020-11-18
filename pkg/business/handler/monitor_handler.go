@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/zdnscloud/cement/log"
 	resterror "github.com/zdnscloud/gorest/error"
 	restresource "github.com/zdnscloud/gorest/resource"
 
@@ -26,7 +26,7 @@ func (h *HomePageHandler) Get(ctx *restresource.Context) (restresource.Resource,
 	req := pbHomePage.ShowHomePageDataReq{ClusterId: DefaultClusterID}
 	resp, err := cli.MonitorClient.ShowHomePageData(context.Background(), &req)
 	if err != nil {
-		log.Errorf("grpc service exec ShowHomePageData failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec ShowHomePageData failed: %s", err.Error()))
 	}
 	monitor := &resource.HomePage{
 		NormalDomains:       resp.GetDomainIsNormal(),

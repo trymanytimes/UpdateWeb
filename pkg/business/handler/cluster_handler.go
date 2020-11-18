@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/zdnscloud/cement/log"
 	resterror "github.com/zdnscloud/gorest/error"
@@ -37,7 +38,7 @@ func NewClusterHandler() (*ClusterHandler, error) {
 	clusterIDReq := pbCluster.ClusterIDReq{ClusterId: DefaultClusterID}
 	defaultCluster, err := cli.ClusterClient.QryOneCluster(context.Background(), &clusterIDReq)
 	if err != nil {
-		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+		return nil, log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
 	}
 	if defaultCluster.SocsInfo.ClusterName == "" {
 		//create a new cluster
@@ -51,7 +52,7 @@ func NewClusterHandler() (*ClusterHandler, error) {
 		//get availavle device
 		devRsp, err := cli.ClusterClient.QryFreeDevice(context.Background(), &pbCluster.QryFreeDeviceReq{})
 		if err != nil {
-			log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+			return nil, log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
 		}
 		for _, v := range devRsp.HostId {
 			clusterInfo.BalanceInfo.NodeHost = append(clusterInfo.BalanceInfo.NodeHost, &pbCluster.NodeHost{
@@ -73,7 +74,7 @@ func NewClusterHandler() (*ClusterHandler, error) {
 		//cache info
 		clusterInfo.CacheInfo = &pbCluster.ClusterCacheInfo{IsCacheOpen: SwitchUp, CacheDbSize: 4096}
 		if _, err := cli.ClusterClient.SetCluster(context.Background(), &clusterInfo); err != nil {
-			log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+			return nil, log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
 		}
 	}
 	return &ClusterHandler{}, nil
@@ -106,7 +107,7 @@ func (h *ClusterHandler) Create(ctx *restresource.Context) (restresource.Resourc
 	//cache info
 	clusterInfo.CacheInfo = &pbCluster.ClusterCacheInfo{IsCacheOpen: cluster.Cache.IsOn, CacheDbSize: cluster.Cache.CacheDBSize}
 	if _, err := cli.ClusterClient.SetCluster(context.Background(), &clusterInfo); err != nil {
-		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec SetCluster failed: %s", err.Error()))
 	}
 	cluster.Balance.Name = clusterInfo.BalanceInfo.ClusterName
 	cluster.Balance.ClusterType = clusterInfo.BalanceInfo.ClusterType
@@ -123,7 +124,7 @@ func (h *ClusterHandler) Delete(ctx *restresource.Context) *resterror.APIError {
 	clusterInfoDel.OperType = OperTypeCreate
 	cli := grpcclient.GetGrpcClient()
 	if _, err := cli.ClusterClient.SetCluster(context.Background(), &clusterInfoDel); err != nil {
-		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+		return resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec SetCluster failed: %s", err.Error()))
 	}
 	return nil
 }
@@ -139,7 +140,7 @@ func (h *ClusterHandler) Get(ctx *restresource.Context) (restresource.Resource, 
 	clusterIDReq := pbCluster.ClusterIDReq{ClusterId: DefaultClusterID}
 	defaultCluster, err := cli.ClusterClient.QryOneCluster(context.Background(), &clusterIDReq)
 	if err != nil {
-		log.Errorf("grpc service exec SetCluster failed: %s", err.Error())
+		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec QryOneCluster failed: %s", err.Error()))
 	}
 	c := &resource.Cluster{Name: defaultCluster.SocsInfo.ClusterName}
 	c.SetID(DefaultClusterID)

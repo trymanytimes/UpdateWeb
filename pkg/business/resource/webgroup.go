@@ -24,3 +24,7 @@ type RuleInfo struct {
 	SearchString  string `json:"searchString" rest:"required=true"`
 	ReplaceString string `json:"replaceString" rest:"required=true"`
 }
+
+func (wg WebGroup) GetParents() []resource.ResourceKind {
+	return []resource.ResourceKind{Cluster{}}
+}

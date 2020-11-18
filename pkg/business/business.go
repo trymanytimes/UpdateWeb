@@ -29,6 +29,8 @@ func RegisterHandler(apiServer *gorest.Server, router gin.IRoutes) error {
 	apiServer.Schemas.MustImport(&Version, resource.Host{}, handler.NewHostHandler())
 	apiServer.Schemas.MustImport(&Version, resource.WebGroup{}, handler.NewWebGroupHandler())
 	apiServer.Schemas.MustImport(&Version, resource.Website{}, handler.NewWebsiteHandler())
+	apiServer.Schemas.MustImport(&Version, resource.Balance{}, handler.NewBalanceHandler())
+	apiServer.Schemas.MustImport(&Version, resource.VipInterval{}, handler.NewVipHandler())
 	return nil
 }
 
