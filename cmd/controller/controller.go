@@ -22,7 +22,7 @@ var (
 )
 
 func main() {
-	flag.StringVar(&configFile, "c", "controller.conf", "configure file path")
+	flag.StringVar(&configFile, "c", "web-controller.conf", "configure file path")
 	flag.Parse()
 
 	log.InitLogger(log.Debug)

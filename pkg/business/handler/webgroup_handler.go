@@ -138,9 +138,6 @@ func (h *WebGroupHandler) List(ctx *restresource.Context) (interface{}, *resterr
 	if err != nil {
 		return nil, resterror.NewAPIError(resterror.ServerError, fmt.Sprintf("grpc service exec GetRaltGroup failed: %s", err.Error()))
 	}
-	if len(defaultWebGroups.GroupList) == 0 {
-		return webGroups, nil
-	}
 	for _, v := range defaultWebGroups.GroupList {
 		c := &resource.WebGroup{
 			Name:         v.StrgroupName,
